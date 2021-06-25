@@ -31,6 +31,24 @@ class MainScaffold extends HookWidget {
         title: ButtonBar(
           alignment: MainAxisAlignment.start,
           children: [
+            Tooltip(
+              message: 'Home',
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  overlayColor: _getRandomColor(),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent),
+                  elevation: MaterialStateProperty.all(0),
+                ),
+                onPressed: () {},
+                child: Image.asset(
+                  // themeMode.state == ThemeMode.light
+                  //     ? 'assets/images/logo-black.png' :
+                  'assets/images/logo-white.png',
+                  height: 200,
+                ),
+              ),
+            ),
             TextButton.icon(
               style: ButtonStyle(
                 overlayColor: _getRandomColor(),
