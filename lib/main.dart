@@ -39,8 +39,8 @@ class MainScreen extends HookWidget {
     return MainScaffold(
       child: Center(
         child: ListView(
-          children: const [
-            Card(
+          children: [
+            const Card(
               child: MaterialBanner(
                 padding: EdgeInsets.all(20),
                 content: Text(
@@ -55,10 +55,24 @@ class MainScreen extends HookWidget {
                 ],
               ),
             ),
-            Card(child: Placeholder()),
-            Card(child: Placeholder()),
-            Card(child: Placeholder()),
-            Card(child: Placeholder()),
+            Wrap(
+              children: List.generate(
+                10,
+                (index) => Card(
+                  child: Row(
+                    children: List.generate(
+                      20,
+                      (index) => const Card(
+                        child: Placeholder(
+                          fallbackHeight: 50,
+                          fallbackWidth: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

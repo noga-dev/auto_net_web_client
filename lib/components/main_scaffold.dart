@@ -38,7 +38,7 @@ class MainScaffold extends HookWidget {
               onPressed: () {},
               icon: LottieBuilder.asset(
                 'assets/anim/shopping-cart.zip',
-                height: 60,
+                height: 80,
               ),
               label: const Text('Market'),
             ),
@@ -49,7 +49,7 @@ class MainScaffold extends HookWidget {
               onPressed: () {},
               icon: LottieBuilder.asset(
                 'assets/anim/property.zip',
-                height: 60,
+                height: 80,
               ),
               label: const Text('Assets'),
             ),
@@ -60,7 +60,7 @@ class MainScaffold extends HookWidget {
               onPressed: () {},
               icon: LottieBuilder.asset(
                 'assets/anim/nlp.zip',
-                height: 60,
+                height: 80,
               ),
               label: const Text('Node'),
             ),
@@ -93,7 +93,14 @@ class MainScaffold extends HookWidget {
                     ethereum?.selectedAddress ?? _addressErrorText;
               },
               child: selectedAddress.value != _addressErrorText
-                  ? Text(getShortAddress(selectedAddress.value))
+                  ? Text(
+                      getShortAddress(selectedAddress.value),
+                      style: TextStyle(
+                        color: themeMode.state == ThemeMode.dark
+                            ? Colors.white
+                            : Colors.black,
+                      ),
+                    )
                   : Transform.scale(
                       scale: .8,
                       child: Image.network(

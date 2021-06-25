@@ -4,12 +4,6 @@ final darkTheme = ThemeData.dark().copyWith(
   colorScheme: const ColorScheme.dark().copyWith(
     primary: Colors.teal,
   ),
-  primaryTextTheme: const TextTheme().copyWith(
-    headline1: const TextStyle().copyWith(
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
-    ),
-  ),
   textButtonTheme: _textButtonThemeData,
 );
 
