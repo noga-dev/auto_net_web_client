@@ -2,6 +2,8 @@
 // @dart=2.12
 import 'package:web3dart/web3dart.dart' as _i1;
 
+
+
 class User extends _i1.GeneratedContract {
   User(
       {required _i1.EthereumAddress address,
