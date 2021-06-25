@@ -1,10 +1,11 @@
+import 'package:auto_net/utils/common.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../models/abi.dart';
 import '../models/project.dart';
 
-const String _sourceAddress = '0x18A4d5A9039fd15A6576896cd7B445f9e4F3cff1';
+
 
 class Chain {
   List<Project> projects = [];
@@ -13,8 +14,8 @@ class Chain {
   late List addressesOfProjects;
   late String tokenAddress;
   String chainID = '';
-  var apiUrl = 'https://rinkeby.infura.io/v3/e697a6a0ac0a4a7b94b09c88770f14e6';
-  final EthereumAddress sourceAddr = EthereumAddress.fromHex(_sourceAddress);
+  var apiUrl = infuraUrl;
+  final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
   Future populate() async {
     populating = true;
     if (projects.isNotEmpty) {

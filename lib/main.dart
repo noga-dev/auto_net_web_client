@@ -1,3 +1,4 @@
+import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -23,18 +24,11 @@ class MyApp extends HookWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: useProvider(themeModeProvider).state,
-        builder: (context, child) {
-          if (MediaQuery.of(context).size.width < 1024) {
-            return const Center(
-              child: Text('Mobile is unsupported'),
-            );
-          }
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
-            child: child!,
-          );
-        },
-        home: const MainScreen(),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.4),
+          child: child!,
+        ),
+        home: MainScaffold(child: MyAssets()),
       );
 }
 
@@ -46,11 +40,9 @@ class MainScreen extends HookWidget {
     return MainScaffold(
       child: Center(
         child: ListView(
-          children: const [
-            Card(
-              color: Colors.white10,
+          children: [
+            const Card(
               child: MaterialBanner(
-                backgroundColor: Colors.white10,
                 padding: EdgeInsets.all(20),
                 content: Text(
                   'just a material banner test.',
@@ -64,24 +56,24 @@ class MainScreen extends HookWidget {
                 ],
               ),
             ),
-            // Wrap(
-            //   children: List.generate(
-            //     10,
-            //     (index) => Card(
-            //       child: Row(
-            //         children: List.generate(
-            //           10,
-            //           (index) => const Card(
-            //             child: Placeholder(
-            //               fallbackHeight: 50,
-            //               fallbackWidth: 50,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            Wrap(
+              children: List.generate(
+                10,
+                (index) => Card(
+                  child: Row(
+                    children: List.generate(
+                      20,
+                      (index) => const Card(
+                        child: Placeholder(
+                          fallbackHeight: 50,
+                          fallbackWidth: 50,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
