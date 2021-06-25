@@ -1,4 +1,5 @@
 import 'dart:js_util';
+import 'dart:math';
 
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
@@ -6,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 const _addressErrorText = 'addrError';
-const _overlayColor = Color(0x90e57373);
 
 class MainScaffold extends HookWidget {
   const MainScaffold({
@@ -30,17 +31,38 @@ class MainScaffold extends HookWidget {
         title: ButtonBar(
           alignment: MainAxisAlignment.start,
           children: [
-            TextButton(
+            TextButton.icon(
+              style: ButtonStyle(
+                overlayColor: _getRandomColor(),
+              ),
               onPressed: () {},
-              child: const Text('Market'),
+              icon: LottieBuilder.asset(
+                'assets/anim/shopping-cart.zip',
+                height: 60,
+              ),
+              label: const Text('Market'),
             ),
-            TextButton(
+            TextButton.icon(
+              style: ButtonStyle(
+                overlayColor: _getRandomColor(),
+              ),
               onPressed: () {},
-              child: const Text('Assets'),
+              icon: LottieBuilder.asset(
+                'assets/anim/property.zip',
+                height: 60,
+              ),
+              label: const Text('Assets'),
             ),
-            TextButton(
+            TextButton.icon(
+              style: ButtonStyle(
+                overlayColor: _getRandomColor(),
+              ),
               onPressed: () {},
-              child: const Text('Node'),
+              icon: LottieBuilder.asset(
+                'assets/anim/nlp.zip',
+                height: 60,
+              ),
+              label: const Text('Node'),
             ),
           ],
         ),
@@ -56,7 +78,7 @@ class MainScaffold extends HookWidget {
                 ),
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
                 elevation: MaterialStateProperty.all(0),
-                overlayColor: MaterialStateProperty.all(_overlayColor),
+                overlayColor: _getRandomColor(),
               ),
               onPressed: () async {
                 if (ethereum == null ||
@@ -71,10 +93,7 @@ class MainScaffold extends HookWidget {
                     ethereum?.selectedAddress ?? _addressErrorText;
               },
               child: selectedAddress.value != _addressErrorText
-                  ? Text(
-                      getShortAddress(selectedAddress.value),
-                      textScaleFactor: 1.2,
-                    )
+                  ? Text(getShortAddress(selectedAddress.value))
                   : Transform.scale(
                       scale: .8,
                       child: Image.network(
@@ -91,8 +110,7 @@ class MainScaffold extends HookWidget {
               child: Transform.scale(
                 scale: 1.6,
                 child: Switch(
-                  overlayColor:
-                      MaterialStateColor.resolveWith((states) => _overlayColor),
+                  overlayColor: _getRandomColor(),
                   activeThumbImage: const AssetImage('assets/images/sun.png'),
                   inactiveThumbImage:
                       const AssetImage('assets/images/new_moon.png'),
@@ -113,3 +131,8 @@ class MainScaffold extends HookWidget {
     );
   }
 }
+
+MaterialStateProperty<Color> _getRandomColor() => MaterialStateProperty.all(
+      Colors.primaries[Random().nextInt(Colors.primaries.length)]
+          .withOpacity(.25),
+    );

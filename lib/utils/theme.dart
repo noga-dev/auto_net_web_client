@@ -7,7 +7,6 @@ final darkTheme = ThemeData.dark().copyWith(
   primaryTextTheme: const TextTheme().copyWith(
     headline1: const TextStyle().copyWith(
       fontWeight: FontWeight.bold,
-      fontSize: 32,
       color: Colors.white,
     ),
   ),
@@ -16,7 +15,7 @@ final darkTheme = ThemeData.dark().copyWith(
 
 final lightTheme = ThemeData.light().copyWith(
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.teal,
+    backgroundColor: Colors.deepPurple,
   ),
   colorScheme: const ColorScheme.light().copyWith(
     primary: Colors.orange,
@@ -28,7 +27,6 @@ final _textButtonThemeData = TextButtonThemeData(
   style: ButtonStyle(
     textStyle: MaterialStateProperty.all(
       TextStyle(
-        fontSize: 22,
         fontWeight: FontWeight.bold,
         foreground: Paint()..color = Colors.white,
         letterSpacing: 2,

@@ -23,6 +23,10 @@ class MyApp extends HookWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: useProvider(themeModeProvider).state,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.4),
+          child: child!,
+        ),
         home: const MainScreen(),
       );
 }
