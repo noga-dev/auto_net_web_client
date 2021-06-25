@@ -10,6 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 const _addressErrorText = 'addrError';
+const _assetHeight = 80.0;
 
 class MainScaffold extends HookWidget {
   const MainScaffold({
@@ -24,65 +25,58 @@ class MainScaffold extends HookWidget {
     final themeMode = useProvider(themeModeProvider);
     final selectedAddress =
         useState(ethereum?.selectedAddress ?? _addressErrorText);
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 120,
-        title: ButtonBar(
-          alignment: MainAxisAlignment.start,
-          children: [
-            Tooltip(
-              message: 'Home',
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  overlayColor: _getRandomColor(),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                  elevation: MaterialStateProperty.all(0),
+        toolbarHeight: _assetHeight + 40,
+        title: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ButtonBar(
+            alignment: MainAxisAlignment.start,
+            children: [
+              Tooltip(
+                message: 'Home',
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    overlayColor: _getRandomColor(),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                    elevation: MaterialStateProperty.all(0),
+                  ),
+                  onPressed: () {},
+                  child: Transform.scale(
+                    scale: 1.6,
+                    child: Image.asset(
+                      // themeMode.state == ThemeMode.light
+                      //     ? 'assets/images/logo-black.png' :
+                      'assets/images/logo-white.png',
+                      width: size.width * .1,
+                      height: _assetHeight * 2,
+                    ),
+                  ),
                 ),
-                onPressed: () {},
-                child: Image.asset(
-                  // themeMode.state == ThemeMode.light
-                  //     ? 'assets/images/logo-black.png' :
-                  'assets/images/logo-white.png',
-                  height: 200,
-                ),
               ),
-            ),
-            TextButton.icon(
-              style: ButtonStyle(
-                overlayColor: _getRandomColor(),
+              MainMenuItem(
+                size: size,
+                text: 'Market',
+                asset: 'shopping-cart',
+                callback: () {},
               ),
-              onPressed: () {},
-              icon: LottieBuilder.asset(
-                'assets/anim/shopping-cart.zip',
-                height: 80,
+              MainMenuItem(
+                size: size,
+                text: 'Assets',
+                asset: 'property',
+                callback: () {},
               ),
-              label: const Text('Market'),
-            ),
-            TextButton.icon(
-              style: ButtonStyle(
-                overlayColor: _getRandomColor(),
+              MainMenuItem(
+                size: size,
+                text: 'Node',
+                asset: 'nlp',
+                callback: () {},
               ),
-              onPressed: () {},
-              icon: LottieBuilder.asset(
-                'assets/anim/property.zip',
-                height: 80,
-              ),
-              label: const Text('Assets'),
-            ),
-            TextButton.icon(
-              style: ButtonStyle(
-                overlayColor: _getRandomColor(),
-              ),
-              onPressed: () {},
-              icon: LottieBuilder.asset(
-                'assets/anim/nlp.zip',
-                height: 80,
-              ),
-              label: const Text('Node'),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           Padding(
@@ -119,21 +113,21 @@ class MainScaffold extends HookWidget {
                             : Colors.black,
                       ),
                     )
-                  : Transform.scale(
-                      scale: .8,
+                  : SizedBox(
+                      width: size.width * .1,
+                      height: _assetHeight - 20,
                       child: Image.network(
                         'assets/images/metamask.png',
                       ),
                     ),
             ),
           ),
-          const SizedBox(width: 30),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
             child: RotatedBox(
               quarterTurns: 3,
               child: Transform.scale(
-                scale: 1.6,
+                scale: 1.2,
                 child: Switch(
                   overlayColor: _getRandomColor(),
                   activeThumbImage: const AssetImage('assets/images/sun.png'),
@@ -149,10 +143,66 @@ class MainScaffold extends HookWidget {
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.only(right: 30)),
+          // const Padding(padding: EdgeInsets.only(right: 30)),
         ],
       ),
-      body: child,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            stops: const [0.0, 1.0],
+            colors: themeMode.state == ThemeMode.dark
+                ? [
+                    const Color(0xff4c4c4c),
+                    const Color(0xff424242),
+                  ]
+                : [
+                    const Color(0xffc3c3c3),
+                    const Color(0xffefefef),
+                  ],
+          ),
+          image: DecorationImage(
+            alignment: Alignment.bottomCenter,
+            fit: BoxFit.fitWidth,
+            image: AssetImage(
+              themeMode.state == ThemeMode.dark
+                  ? 'assets/images/bg-dark.jpg'
+                  : 'assets/images/bg-light.jpg',
+            ),
+          ),
+        ),
+        child: child,
+      ),
+    );
+  }
+}
+
+class MainMenuItem extends StatelessWidget {
+  const MainMenuItem({
+    Key? key,
+    required this.size,
+    required this.text,
+    required this.asset,
+    required this.callback,
+  }) : super(key: key);
+
+  final Size size;
+  final String text;
+  final String asset;
+  final VoidCallback callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton.icon(
+      style: ButtonStyle(
+        overlayColor: _getRandomColor(),
+      ),
+      onPressed: callback,
+      icon: LottieBuilder.asset(
+        'assets/anim/$asset.zip',
+        width: size.width * .1,
+        height: _assetHeight,
+      ),
+      label: Text(text),
     );
   }
 }
