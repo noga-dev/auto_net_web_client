@@ -200,8 +200,7 @@ class MainMenuItem extends HookWidget {
       child: AnimatedSwitcher(
         duration: animController.duration!,
         transitionBuilder: (child, anim) => SlideTransition(
-          position:
-              Tween(begin: Offset(.5, .5), end: Offset(-.5, -.5)).animate(anim),
+          position: Tween(begin: Offset(0, 0), end: Offset(0, 0)).animate(anim),
           child: child,
         ),
         layoutBuilder: (child, _) => child!,
