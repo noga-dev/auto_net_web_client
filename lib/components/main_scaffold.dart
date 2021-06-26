@@ -1,6 +1,8 @@
 import 'dart:js_util';
 import 'dart:math';
 
+import 'package:auto_net/screens/assets.dart';
+import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,14 @@ class MainScaffold extends HookWidget {
                         MaterialStateProperty.all(Colors.transparent),
                     elevation: MaterialStateProperty.all(0),
                   ),
-                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, anim1, anim2) =>
+                          const LandingScreen(),
+                      transitionDuration: const Duration(),
+                    ),
+                  ),
                   child: Transform.scale(
                     scale: 1.6,
                     child: Image.asset(
@@ -68,8 +77,13 @@ class MainScaffold extends HookWidget {
                 size: size,
                 text: 'Assets',
                 asset: 'property',
-                callback: () =>
-                    Navigator.pushReplacementNamed(context, '/assets'),
+                callback: () => Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, anim1, anim2) => const MyAssets(),
+                    transitionDuration: const Duration(),
+                  ),
+                ),
               ),
               MainMenuItem(
                 size: size,
@@ -145,41 +159,15 @@ class MainScaffold extends HookWidget {
               ),
             ),
           ),
-          // const Padding(padding: EdgeInsets.only(right: 30)),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            stops: const [0.0, 1.0],
-            colors: themeMode.state == ThemeMode.dark
-                ? [
-                    const Color(0xff4c4c4c),
-                    const Color(0xff424242),
-                  ]
-                : [
-                    const Color(0xffc3c3c3),
-                    const Color(0xffefefef),
-                  ],
-          ),
-          // image: DecorationImage(
-          //   alignment: Alignment.bottomCenter,
-          //   fit: BoxFit.fitWidth,
-          //   image: AssetImage(
-          //     themeMode.state == ThemeMode.dark
-          //         ? 'assets/images/bg-dark.jpg'
-          //         : 'assets/images/bg-light.jpg',
-          //   ),
-          // ),
-        ),
-        child: child,
-      ),
+      body: child,
     );
   }
 }
 
-class MainMenuItem extends StatelessWidget {
-  const MainMenuItem({
+class MainMenuItem extends HookWidget {
+  MainMenuItem({
     Key? key,
     required this.size,
     required this.text,
@@ -192,19 +180,44 @@ class MainMenuItem extends StatelessWidget {
   final String asset;
   final VoidCallback callback;
 
+  bool isTextVisisble = false;
+
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      style: ButtonStyle(
-        overlayColor: _getRandomColor(),
+    final animController = useAnimationController(
+      duration: const Duration(seconds: 1),
+    );
+    return Listener(
+      onPointerHover: (e) {
+        if (e.down) {
+          isTextVisisble = false;
+          animController.forward();
+        } else {
+          isTextVisisble = true;
+          animController.reverse();
+        }
+      },
+      child: AnimatedSwitcher(
+        duration: animController.duration!,
+        transitionBuilder: (child, anim) => SlideTransition(
+          position:
+              Tween(begin: Offset(.5, .5), end: Offset(-.5, -.5)).animate(anim),
+          child: child,
+        ),
+        layoutBuilder: (child, _) => child!,
+        child: TextButton.icon(
+          style: ButtonStyle(
+            overlayColor: _getRandomColor(),
+          ),
+          icon: LottieBuilder.asset(
+            'assets/anim/$asset.zip',
+            width: size.width * .1,
+            height: _assetHeight,
+          ),
+          onPressed: callback,
+          label: Text(text),
+        ),
       ),
-      onPressed: callback,
-      icon: LottieBuilder.asset(
-        'assets/anim/$asset.zip',
-        width: size.width * .1,
-        height: _assetHeight,
-      ),
-      label: Text(text),
     );
   }
 }
@@ -213,3 +226,5 @@ MaterialStateProperty<Color> _getRandomColor() => MaterialStateProperty.all(
       Colors.primaries[Random().nextInt(Colors.primaries.length)]
           .withOpacity(.25),
     );
+
+// class MainAppBar extends StatelessWidget implements PreferredSizeWidget {}

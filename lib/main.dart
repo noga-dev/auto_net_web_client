@@ -1,16 +1,18 @@
 import 'package:auto_net/screens/assets.dart';
+import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-import 'components/main_scaffold.dart';
 import 'services/providers.dart';
 
 // TODO
-// 1. pushing replaceNamed with the scaffold leads to animations showing removing
-// the MainMenu. Solutions: i - get rid of the scaffold method? ii - get rid of
+// 1. pushing replaceNamed with the scaffold
+// leads to animations showing removing
+// the MainMenu. Solutions: i - get rid of the
+// scaffold method? ii - get rid of
 // the AppBar method? iii - remove animations?
 // 2. bg img cutoff issue - ask andrei?
 
@@ -42,40 +44,9 @@ class MyApp extends HookWidget {
           );
         },
         routes: {
-          '/': (context) => const MainScreen(),
+          '/': (context) => const LandingScreen(),
           '/assets': (context) => const MyAssets(),
         },
         initialRoute: '/',
       );
-}
-
-class MainScreen extends HookWidget {
-  const MainScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MainScaffold(
-      child: Center(
-        child: ListView(
-          children: const [
-            Card(
-              child: MaterialBanner(
-                padding: EdgeInsets.all(20),
-                content: Text(
-                  'just a material banner test.',
-                ),
-                leading: Icon(
-                  Icons.credit_card,
-                ),
-                actions: [
-                  BackButton(),
-                  CloseButton(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
