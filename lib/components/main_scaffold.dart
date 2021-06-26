@@ -29,6 +29,7 @@ class MainScaffold extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         toolbarHeight: _assetHeight + 40,
         title: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -44,7 +45,7 @@ class MainScaffold extends HookWidget {
                         MaterialStateProperty.all(Colors.transparent),
                     elevation: MaterialStateProperty.all(0),
                   ),
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
                   child: Transform.scale(
                     scale: 1.6,
                     child: Image.asset(
@@ -67,7 +68,8 @@ class MainScaffold extends HookWidget {
                 size: size,
                 text: 'Assets',
                 asset: 'property',
-                callback: () {},
+                callback: () =>
+                    Navigator.pushReplacementNamed(context, '/assets'),
               ),
               MainMenuItem(
                 size: size,

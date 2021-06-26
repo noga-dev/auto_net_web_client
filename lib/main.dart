@@ -8,6 +8,12 @@ import 'package:url_strategy/url_strategy.dart';
 import 'components/main_scaffold.dart';
 import 'services/providers.dart';
 
+// TODO
+// 1. pushing replaceNamed with the scaffold leads to animations showing removing
+// the MainMenu. Solutions: i - get rid of the scaffold method? ii - get rid of
+// the AppBar method? iii - remove animations?
+// 2. bg img cutoff issue - ask andrei?
+
 void main() async {
   setPathUrlStrategy();
 
@@ -24,11 +30,22 @@ class MyApp extends HookWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: useProvider(themeModeProvider).state,
-        builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.4),
-          child: child!,
-        ),
-        home: const MainScaffold(child: MyAssets()),
+        builder: (context, child) {
+          if (MediaQuery.of(context).size.width < 1024) {
+            return const Center(
+              child: Text('Mobile is unsupported'),
+            );
+          }
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+            child: child!,
+          );
+        },
+        routes: {
+          '/': (context) => const MainScreen(),
+          '/assets': (context) => const MyAssets(),
+        },
+        initialRoute: '/',
       );
 }
 
@@ -40,8 +57,8 @@ class MainScreen extends HookWidget {
     return MainScaffold(
       child: Center(
         child: ListView(
-          children: [
-            const Card(
+          children: const [
+            Card(
               child: MaterialBanner(
                 padding: EdgeInsets.all(20),
                 content: Text(
@@ -54,24 +71,6 @@ class MainScreen extends HookWidget {
                   BackButton(),
                   CloseButton(),
                 ],
-              ),
-            ),
-            Wrap(
-              children: List.generate(
-                10,
-                (index) => Card(
-                  child: Row(
-                    children: List.generate(
-                      20,
-                      (index) => const Card(
-                        child: Placeholder(
-                          fallbackHeight: 50,
-                          fallbackWidth: 50,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
               ),
             ),
           ],

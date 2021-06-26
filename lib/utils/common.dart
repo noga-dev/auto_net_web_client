@@ -1,4 +1,3 @@
-import 'package:auto_net/models/human.dart';
 import 'package:auto_net/models/project.dart';
 
 String getShortAddress(String address) =>
