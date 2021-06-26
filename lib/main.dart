@@ -33,7 +33,7 @@ class MyApp extends HookWidget {
         builder: (context, child) {
           if (MediaQuery.of(context).size.width < 1024) {
             return const Center(
-              child: Text('Mobile is unsupported'),
+              child: Text('Mobile is not supported'),
             );
           }
           return MediaQuery(

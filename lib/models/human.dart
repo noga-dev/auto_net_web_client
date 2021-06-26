@@ -1,5 +1,9 @@
+// ignore_for_file: avoid_print
+//ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 import 'dart:js_util';
+import 'package:auto_net/models/project.dart';
 import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
@@ -9,9 +13,11 @@ import '../contracts/user.g.dart';
 
 class Human {
   User? user;
+  EtherAmount? userBalance;
   EtherAmount? balance;
   EtherAmount? contractBalance;
   late Web3Provider web3;
+  Map<String,double> assets={};
   late Web3Client web3infura = Web3Client(infuraUrl, Client());
 
   List<String> sourceAbi = [
@@ -69,18 +75,22 @@ class Human {
     var first = await callMethod(sourceContract, 'users', [se]);
     var ponse = await promiseToFuture(first);
     print('user address is ' + ponse.toString());
-    Map<String, double> assets = {};
     var tonse;
     if (!ponse.toString().contains('000000')) {
       var userContract = Contract(ponse.toString(), userAbi, web3user);
       var firstAndAHaldf = await callMethod(userContract, 'balanceATN', []);
       tonse = await promiseToFuture(firstAndAHaldf);
-      print('from conse we have ' + tonse.toString());
+      print('from conse we have $tonse');
+    userBalance=EtherAmount.fromUnitAndValue(
+        EtherUnit.wei, BigInt.parse(tonse.toString()));
       var second = await callMethod(userContract, 'getAssets', []);
       var donse = await promiseToFuture(second);
       for (var asset in donse) {
-        print(asset[0].toString());
+        print('found project for user');
+        print("asset zero "+asset[0].toString());
+        print("asset one "+ asset[1].toString());
         assets[asset[0].toString()] = double.parse(asset[1].toString());
+        // assets.putIfAbsent(asset[0].toString(), () => double.parse(asset[1].toString()));
       }
     }
 

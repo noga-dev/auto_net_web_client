@@ -1,4 +1,5 @@
 import 'package:auto_net/components/main_scaffold.dart';
+import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,9 +25,9 @@ class MyAssets extends HookWidget {
             ),
             const SizedBox(height: 100),
             Text('balance ${useUser.state.balance}'),
-            Text(useUser.state.user == null
-                ? 'No contract'
-                : 'Contract is here'),
+           useUser.state.user == null
+                ? Text( 'No contract')
+                : MyContract(),
             TextButton(
               onPressed: () {
                 useUser.state.web3sign();

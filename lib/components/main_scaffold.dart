@@ -162,15 +162,15 @@ class MainScaffold extends HookWidget {
                     const Color(0xffefefef),
                   ],
           ),
-          image: DecorationImage(
-            alignment: Alignment.bottomCenter,
-            fit: BoxFit.fitWidth,
-            image: AssetImage(
-              themeMode.state == ThemeMode.dark
-                  ? 'assets/images/bg-dark.jpg'
-                  : 'assets/images/bg-light.jpg',
-            ),
-          ),
+          // image: DecorationImage(
+          //   alignment: Alignment.bottomCenter,
+          //   fit: BoxFit.fitWidth,
+          //   image: AssetImage(
+          //     themeMode.state == ThemeMode.dark
+          //         ? 'assets/images/bg-dark.jpg'
+          //         : 'assets/images/bg-light.jpg',
+          //   ),
+          // ),
         ),
         child: child,
       ),
