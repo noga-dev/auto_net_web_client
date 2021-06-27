@@ -85,6 +85,7 @@ class MainScaffold extends HookWidget {
                           category: null,
                           description: null,
                           imgUrl: null,
+                          mature: true,
                           github: 'https://github.com/openai/gpt-3',
                         ),
                       ),
@@ -187,7 +188,7 @@ class MainScaffold extends HookWidget {
 }
 
 class MainMenuItem extends HookWidget {
-  MainMenuItem({
+  const MainMenuItem({
     Key? key,
     required this.size,
     required this.text,
@@ -221,13 +222,13 @@ class MainMenuItem extends HookWidget {
             height: _assetHeight,
           ),
           onPressed: callback,
-          label: SizedBox(),
+          label: const SizedBox(),
         ),
         secondChild: TextButton(
           style: ButtonStyle(
             overlayColor: _getRandomColor(),
             tapTargetSize: MaterialTapTargetSize.padded,
-            // fixedSize: MaterialStateProperty.all(Size(140, _assetHeight)),
+            fixedSize: MaterialStateProperty.all(const Size(140, _assetHeight)),
           ),
           onPressed: callback,
           child: Text(text),
@@ -235,17 +236,16 @@ class MainMenuItem extends HookWidget {
         firstCurve: Curves.easeIn,
         secondCurve: Curves.easeOut,
         layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-          // return isHovering.value ? topChild : bottomChild;
           return Stack(
             children: [
               Positioned(
-                child: bottomChild,
                 top: 0,
                 key: bottomChildKey,
+                child: bottomChild,
               ),
               Positioned(
-                child: topChild,
                 key: topChildKey,
+                child: topChild,
               ),
             ],
           );

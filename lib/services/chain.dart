@@ -4,8 +4,6 @@ import 'package:web3dart/web3dart.dart';
 import '../models/abi.dart';
 import '../models/project.dart';
 
-
-
 class Chain {
   List<Project> projects = [];
   bool populating = false;
@@ -15,12 +13,12 @@ class Chain {
   String chainID = '';
   var apiUrl = infuraUrl;
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
-  Future populate() async {
+  Future<bool> populate() async {
     populating = true;
     if (projects.isNotEmpty) {
       print("Projects is not empty");
       populating = false;
-      return;
+      return false;
     } else {
       print("Projects was empty");
       var httpClient = Client();
@@ -35,10 +33,10 @@ class Chain {
       var allProjects = await ethClient
           .call(contract: contractSursa, function: proiectef, params: []);
       addressesOfProjects = allProjects[0];
-      int counter=0;
+      int counter = 0;
       for (var item in addressesOfProjects) {
-        counter+=1;
-        print("found the project $item and $counter");
+        print("found the project $item and ${counter++}");
+        // print("found the project $item and $counter");
         final projAddr = EthereumAddress.fromHex(item.toString());
         final contractProiect = DeployedContract(
             ContractAbi.fromJson(projectAbi, 'Project'), projAddr);
@@ -48,22 +46,40 @@ class Chain {
         // String name = details[0];
         // String desc = details[1];
         var category = details[2].toString().split('http')[0];
-        var imgUrl = 'http${details[2].toString().split('http')[1]}';
-        var gitLink = 'http${details[2].toString().split('http')[2]}';
+        String? imgUrl;
+        String? gitLink;
+        try {
+          imgUrl = 'http${details[2].toString().split('http')[1]}';
+        } catch (e) {
+          imgUrl = 'https://i.ibb.co/2dphSM9/cogs.png';
+        }
+        try {
+          gitLink = 'http${details[2].toString().split('http')[2]}';
+        } catch (e) {
+          gitLink = 'https://github.com/openai/gpt-3';
+        }
+        // if (counter == 3) {
+        //   populated = true;
+        //   populating = false;
+        //   return true;
+        // }
         var project = Project(
           address: item.toString(),
           name: details[0].toString(),
           description: details[1].toString(),
           imgUrl: imgUrl,
+          mature: counter == 0,
           category: category,
           github: gitLink,
         );
+        // print(counter);
         projects.add(project);
         // routes['/market/${project.address}'] =
         //     ProjectView(address: project.address, appstate: state);
       }
       populated = true;
-      populating=false;
+      populating = false;
+      return true;
     }
   }
 }

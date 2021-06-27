@@ -1,19 +1,43 @@
-import 'package:auto_net/components/project_view.dart';
-import 'package:auto_net/models/project.dart';
+import 'package:auto_net/components/project_card.dart';
 import 'package:auto_net/services/providers.dart';
-import 'package:auto_net/utils/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
-import '../services/chain.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../components/project_card.dart';
 
 class Market extends HookWidget {
-  Market({Key? key}) : super(key: key);
-  
+  const Market({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final useChain = useProvider(chain);
-    return useChain.state.populating?CircularProgressIndicator():Text("Done");
+    final useProjects = useState(<Widget>[]);
+
+    print('P: ${useChain.state.projects.length}');
+    return FutureBuilder(
+      future: useChain.state.populate(),
+      builder: (context, snap) {
+        if (!snap.hasData) {
+          return const CircularProgressIndicator();
+        } else {
+          if (!(snap.data as bool)) {
+            return const Text('FALSE');
+          } else {
+            if (useProjects.value.isEmpty) {
+              for (var project in useChain.state.projects) {
+                useProjects.value.add(ProjectCard(project: project));
+              }
+            }
+            return Center(
+              child: ListView(
+                children: useProjects.value,
+              ),
+            );
+          }
+        }
+      },
+    );
   }
 }
 

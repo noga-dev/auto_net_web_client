@@ -1,5 +1,4 @@
-import 'dart:convert';
-// import 'package:filesystem_picker/filesystem_picker.dart';
+// ignore_for_file: lines_longer_than_80_chars
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +10,19 @@ import 'package:http/http.dart' as http;
 
 const _textStyle = TextStyle(fontSize: 19, fontWeight: FontWeight.bold);
 
-const _errorMsg = 'ERROR';
-
 class TeamMember extends StatelessWidget {
-  TeamMember(
-      {Key? key, required this.project, required this.address, required this.percent, required this.state})
+  const TeamMember(
+      {Key? key,
+      required this.project,
+      required this.address,
+      required this.percent,
+      required this.state})
       : super(key: key);
 
-  late final String address;
-  late final double percent;
-  late final _EditProjectState state;
-  late final Project project;
+  final String address;
+  final double percent;
+  final _EditProjectState state;
+  final Project project;
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +98,15 @@ class TeamMember extends StatelessWidget {
 }
 
 class EditProject extends StatefulWidget {
-  EditProject({Key? key, required this.project,}) : super(key: key);
+  const EditProject({
+    Key? key,
+    required this.project,
+  }) : super(key: key);
   final bool textfield = false;
   final bool filepaste = false;
-  
+
   final bool socket = false;
-  late Project project;
+  final Project project;
   final String url = 'https://discord-ro.tk:5000/v1/post_image';
 
   @override
@@ -136,8 +140,8 @@ class _EditProjectState extends State<EditProject> {
       ));
     }
     return Scrollbar(
-          child: SingleChildScrollView(
-              child: Container(
+      child: SingleChildScrollView(
+          child: Container(
         margin: const EdgeInsets.all(10),
         width: MediaQuery.of(context).size.width * 0.8,
         decoration:
@@ -155,12 +159,12 @@ class _EditProjectState extends State<EditProject> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                    SizedBox(
-                      height: 140,
-                      width: 179,                   
-                         child:
-                           Image.network('https://i.ibb.co/2dphSM9/cogs.png',
-                            height: 120),),
+              SizedBox(
+                height: 140,
+                width: 179,
+                child: Image.network('https://i.ibb.co/2dphSM9/cogs.png',
+                    height: 120),
+              ),
               const SizedBox(width: 50),
               Column(
                 children: [agentName(), agentDescription()],
@@ -195,7 +199,8 @@ class _EditProjectState extends State<EditProject> {
           const SizedBox(
             width: 400,
             child: Text(
-                'To ensure compatibility in both training and production environments, Autonet projects need a standardized codebase. As best practice, we recommend cloning the template project and adding your custom logic to it. Make sure your repo is implementing all required methods before committing it to the blockchain:'),
+              'To ensure compatibility in both training and production environments, Autonet projects need a standardized codebase. As best practice, we recommend cloning the template project and adding your custom logic to it. Make sure your repo is implementing all required methods before committing it to the blockchain:',
+            ),
           ),
           const SizedBox(height: 35),
           Row(
@@ -217,8 +222,10 @@ class _EditProjectState extends State<EditProject> {
           const SizedBox(height: 30),
           ElevatedButton(
             onPressed: () {
-              setState((){ widget.project.github = textEditingController.text;});
-             
+              setState(() {
+                widget.project.github = textEditingController.text;
+              });
+
               Navigator.of(context).pop();
             },
             child: const SizedBox(
@@ -325,8 +332,9 @@ class _EditProjectState extends State<EditProject> {
                           } else {
                             return SafeArea(
                               child: Markdown(
-                                data:  (snapshot.data as http.Response).body.toString()
-                              ),
+                                  data: (snapshot.data as http.Response)
+                                      .body
+                                      .toString()),
                             );
                           }
                         },
@@ -419,7 +427,8 @@ class _EditProjectState extends State<EditProject> {
                           margin: const EdgeInsets.symmetric(vertical: 30),
                           width: 480,
                           child: const Text(
-                              'The dev/founding team can be allocated a maximum of 9% of the revenue generated by the mature agent, and that can be split between any number of Autonet contracts.'),
+                            'The dev/founding team can be allocated a maximum of 9% of the revenue generated by the mature agent, and that can be split between any number of Autonet contracts.',
+                          ),
                         ),
                         Container(
                           padding: const EdgeInsets.all(25),
@@ -542,9 +551,12 @@ class _EditProjectState extends State<EditProject> {
                                                                 widget.project
                                                                         .team[
                                                                     k] = widget
-                                                                        .project
-                                                                        .team[k]?? -
-                                                                    1 / (widget.project.team.keys.length - 1);
+                                                                            .project
+                                                                            .team[
+                                                                        k] ??
+                                                                    -1 /
+                                                                        (widget.project.team.keys.length -
+                                                                            1);
                                                               }
                                                             },
                                                           );
@@ -609,7 +621,7 @@ class _EditProjectState extends State<EditProject> {
                   //         ){
                   //            us33r.createProject(
                   //             widget.project.name!,
-                  //              widget.project.description!, 
+                  //              widget.project.description!,
                   //              widget.project.github!);
                   //         }
                   //       },
@@ -709,15 +721,15 @@ class _EditProjectState extends State<EditProject> {
             ),
     );
   }
-
- 
-
 }
 
 class TemporaryConsumer extends HookWidget {
-  TemporaryConsumer({ Key? key, required this.project, }) : super(key: key);
+  const TemporaryConsumer({
+    Key? key,
+    required this.project,
+  }) : super(key: key);
 
-  late Project project;
+  final Project project;
 
   @override
   Widget build(BuildContext context) {
@@ -726,33 +738,32 @@ class TemporaryConsumer extends HookWidget {
     // useUser.state.web3sign();
 
     return SizedBox(
-                      height: 40,
-                      width: 180,
-                      child: TextButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.red)),
-                        onPressed: () {
-                          if (project.name!=null&&
-                              project.description!=null&&
-                              project.github!=null
-                          ){
-                            print("user state: "+useUser.state.toString());
-                            useUser.state.createProject(
-                              project.name!,
-                               project.description!, 
-                               project.github!,);
-                          }
-                        },
-                        child: const Text(
-                          'ADD PROJECT',
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    );
+      height: 40,
+      width: 180,
+      child: TextButton(
+        style:
+            ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+        onPressed: () {
+          if (project.name != null &&
+              project.description != null &&
+              project.github != null) {
+            print('user state: ${useUser.state}');
+            useUser.state.createProject(
+              project.name!,
+              project.description!,
+              project.github!,
+            );
+          }
+        },
+        child: const Text(
+          'ADD PROJECT',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 }

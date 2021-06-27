@@ -1,10 +1,5 @@
-// ignore_for_file: avoid_print
-//ignore_for_file: avoid_dynamic_calls
-
 import 'dart:convert';
 import 'dart:js_util';
-import 'package:auto_net/models/project.dart';
-import 'package:auto_net/services/providers.dart';
 import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
@@ -19,7 +14,7 @@ class Human {
   EtherAmount? contractBalance;
   String? contractAddress;
   late Web3Provider web3;
-  Map<String,double> assets={};
+  Map<String, double> assets = {};
   late Web3Client web3infura = Web3Client(infuraUrl, Client());
 
   List<String> sourceAbi = [
@@ -56,9 +51,9 @@ class Human {
     } else {
       print(json.decode(stringify(result)));
       var first = await callMethod(sourceContract, 'users', []);
-      print('second ' + first.toString());
+      print('second $first');
       var ponse = await promiseToFuture(first);
-      print('new contract address ' + ponse.toString());
+      print('new contract address $ponse');
       user = User(
         address: EthereumAddress.fromHex(ponse.toString()),
         client: web3infura,
@@ -66,35 +61,37 @@ class Human {
     }
   }
 
+  // ignore: always_declare_return_types
   web3sign() async {
-    String se = ethereum!.selectedAddress;
+    var se = ethereum!.selectedAddress;
     print('selectedAddress: $se');
-    Web3Provider web3user = Web3Provider(ethereum!);
+    var web3user = Web3Provider(ethereum!);
     var catAre =
         await promiseToFuture(web3user.getBalance(ethereum!.selectedAddress));
-    print('de curiozitate ' + catAre.toString());
-    String owner = se;
+    print('de curiozitate $catAre');
     var sourceContract = Contract(sourceAddress, sourceAbi, web3user);
     var first = await callMethod(sourceContract, 'users', [se]);
     var ponse = await promiseToFuture(first);
-    print('user address is ' + ponse.toString());
-    var tonse;
+    print('user address is $ponse');
+    dynamic tonse;
     if (!ponse.toString().contains('000000')) {
-      contractAddress=ponse.toString();
+      contractAddress = ponse.toString();
       var userContract = Contract(ponse.toString(), userAbi, web3user);
       var firstAndAHaldf = await callMethod(userContract, 'balanceATN', []);
       tonse = await promiseToFuture(firstAndAHaldf);
       print('from conse we have $tonse');
-    userBalance=EtherAmount.fromUnitAndValue(
-        EtherUnit.wei, BigInt.parse(tonse.toString()));
+      userBalance = EtherAmount.fromUnitAndValue(
+          EtherUnit.wei, BigInt.parse(tonse.toString()));
       var second = await callMethod(userContract, 'getAssets', []);
       var donse = await promiseToFuture(second);
       for (var asset in donse) {
         print('found project for user');
-        print("asset zero "+asset[0].toString());
-        print("asset one "+ asset[1].toString());
+        // ignore: avoid_dynamic_calls
+        print('asset zero ${asset[0]}');
+        // ignore: avoid_dynamic_calls
+        print('asset one ${asset[1]}');
+        // ignore: avoid_dynamic_calls
         assets[asset[0].toString()] = double.parse(asset[1].toString());
-        // assets.putIfAbsent(asset[0].toString(), () => double.parse(asset[1].toString()));
       }
     }
 
@@ -110,15 +107,21 @@ class Human {
     }
   }
 
-  createProject(name,github,description)async{
+  // ignore: always_declare_return_types
+  createProject(name, github, description) async {
     print("We're creating the new project");
-    print("contract address: "+contractAddress.toString());
-    Web3Provider web3user = Web3Provider(ethereum!);
+    print('contract address: $contractAddress');
+    var web3user = Web3Provider(ethereum!);
     var userContract = Contract(contractAddress!, userAbi, web3user);
-    print("user Contract:"+userContract.toString());
-    userContract=userContract.connect(web3user.getSigner());
-    var firstAndAHaldf = await callMethod(userContract, 'createProject', [name,
-    description,github,'https://i.ibb.co/2dphSM9/cogs.png',"Natural Language"]);
+    print('user Contract:$userContract');
+    userContract = userContract.connect(web3user.getSigner());
+    var firstAndAHaldf = await callMethod(userContract, 'createProject', [
+      name,
+      description,
+      github,
+      'https://i.ibb.co/2dphSM9/cogs.png',
+      'Natural Language'
+    ]);
     var tonse = await promiseToFuture(firstAndAHaldf);
     print('from conse we have $tonse');
   }
