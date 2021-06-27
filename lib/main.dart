@@ -1,3 +1,4 @@
+import 'package:auto_net/components/main_scaffold.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/utils/theme.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'components/new_project.dart';
+import 'models/project.dart';
 import 'services/providers.dart';
 
 // TODO
@@ -15,6 +18,8 @@ import 'services/providers.dart';
 // scaffold method? ii - get rid of
 // the AppBar method? iii - remove animations?
 // 2. bg img cutoff issue - ask andrei?
+// 3. add url routing + keep state in provider
+// and add ability to kill the state manually
 
 void main() async {
   setPathUrlStrategy();
@@ -33,7 +38,7 @@ class MyApp extends HookWidget {
         darkTheme: darkTheme,
         themeMode: useProvider(themeModeProvider).state,
         builder: (context, child) {
-          if (MediaQuery.of(context).size.width < 1024) {
+          if (MediaQuery.of(context).size.aspectRatio<0.8) {
             return const Center(
               child: Text('Mobile is not supported'),
             );
@@ -46,6 +51,15 @@ class MyApp extends HookWidget {
         routes: {
           '/': (context) => const LandingScreen(),
           '/assets': (context) => const MyAssets(),
+          '/new':(cntext)=> MainScaffold(child: EditProject(
+            project:Project(
+              name: null,
+              address: null,
+              category: null,
+              description: null,
+              imgUrl: null,
+              github: "https://github.com/openai/gpt-3"
+            ) ,))
         },
         initialRoute: '/',
       );

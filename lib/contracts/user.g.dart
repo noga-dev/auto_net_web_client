@@ -35,6 +35,7 @@ class User extends _i1.GeneratedContract {
   Future<String> createProject(String _name, String _description, String _code,
       String _iconurl, String _category,
       {required _i1.Credentials credentials}) async {
+        print("adding project");
     final function = self.function('createProject');
     final params = [_name, _description, _code, _iconurl, _category];
     final transaction = _i1.Transaction.callContract(

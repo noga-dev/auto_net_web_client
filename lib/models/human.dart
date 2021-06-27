@@ -4,6 +4,7 @@
 import 'dart:convert';
 import 'dart:js_util';
 import 'package:auto_net/models/project.dart';
+import 'package:auto_net/services/providers.dart';
 import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
@@ -16,6 +17,7 @@ class Human {
   EtherAmount? userBalance;
   EtherAmount? balance;
   EtherAmount? contractBalance;
+  String? contractAddress;
   late Web3Provider web3;
   Map<String,double> assets={};
   late Web3Client web3infura = Web3Client(infuraUrl, Client());
@@ -31,6 +33,7 @@ class Human {
   List<String> userAbi = [
     'function balanceATN() view returns (uint256)',
     'function getAssets() view returns (tuple(address,uint256)[])',
+    'function createProject(string, string, string, string, string) '
   ];
 
   // ignore: always_declare_return_types
@@ -77,6 +80,7 @@ class Human {
     print('user address is ' + ponse.toString());
     var tonse;
     if (!ponse.toString().contains('000000')) {
+      contractAddress=ponse.toString();
       var userContract = Contract(ponse.toString(), userAbi, web3user);
       var firstAndAHaldf = await callMethod(userContract, 'balanceATN', []);
       tonse = await promiseToFuture(firstAndAHaldf);
@@ -104,5 +108,18 @@ class Human {
       contractBalance = EtherAmount.fromUnitAndValue(
           EtherUnit.wei, BigInt.parse(tonse.toString()));
     }
+  }
+
+  createProject(name,github,description)async{
+    print("We're creating the new project");
+    print("contract address: "+contractAddress.toString());
+    Web3Provider web3user = Web3Provider(ethereum!);
+    var userContract = Contract(contractAddress!, userAbi, web3user);
+    print("user Contract:"+userContract.toString());
+    userContract=userContract.connect(web3user.getSigner());
+    var firstAndAHaldf = await callMethod(userContract, 'createProject', [name,
+    description,github,'https://i.ibb.co/2dphSM9/cogs.png',"Natural Language"]);
+    var tonse = await promiseToFuture(firstAndAHaldf);
+    print('from conse we have $tonse');
   }
 }

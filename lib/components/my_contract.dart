@@ -57,6 +57,10 @@ class MyContract extends HookWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
                 children: aseturi
+            ),
+            Divider(height: 70),
+            TextButton(child: Text("Developing in TensorFlow? Add your project here."),
+              onPressed: (){},
             )
           ],
         ),

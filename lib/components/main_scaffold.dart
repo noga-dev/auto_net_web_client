@@ -1,6 +1,7 @@
 import 'dart:js_util';
 import 'dart:math';
 
+import 'package:auto_net/models/project.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/services/providers.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+
+import 'new_project.dart';
 
 const _addressErrorText = 'addrError';
 const _assetHeight = 80.0;
@@ -71,7 +74,24 @@ class MainScaffold extends HookWidget {
                 size: size,
                 text: 'Market',
                 asset: 'shopping-cart',
-                callback: () {},
+                callback: () => Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, anim1, anim2) => MainScaffold(
+                      child: EditProject(
+                        project: Project(
+                          name: null,
+                          address: null,
+                          category: null,
+                          description: null,
+                          imgUrl: null,
+                          github: "https://github.com/openai/gpt-3",
+                        ),
+                      ),
+                    ),
+                    transitionDuration: const Duration(),
+                  ),
+                ),
               ),
               MainMenuItem(
                 size: size,
