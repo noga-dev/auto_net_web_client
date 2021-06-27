@@ -1,7 +1,6 @@
 import 'package:auto_net/utils/common.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
-
 import '../models/abi.dart';
 import '../models/project.dart';
 
@@ -19,9 +18,11 @@ class Chain {
   Future populate() async {
     populating = true;
     if (projects.isNotEmpty) {
+      print("Projects is not empty");
       populating = false;
       return;
     } else {
+      print("Projects was empty");
       var httpClient = Client();
       var ethClient = Web3Client(apiUrl, httpClient);
       final contractSursa = DeployedContract(
@@ -34,7 +35,10 @@ class Chain {
       var allProjects = await ethClient
           .call(contract: contractSursa, function: proiectef, params: []);
       addressesOfProjects = allProjects[0];
+      int counter=0;
       for (var item in addressesOfProjects) {
+        counter+=1;
+        print("found the project $item and $counter");
         final projAddr = EthereumAddress.fromHex(item.toString());
         final contractProiect = DeployedContract(
             ContractAbi.fromJson(projectAbi, 'Project'), projAddr);
@@ -59,6 +63,7 @@ class Chain {
         //     ProjectView(address: project.address, appstate: state);
       }
       populated = true;
+      populating=false;
     }
   }
 }

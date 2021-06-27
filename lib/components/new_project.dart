@@ -711,41 +711,7 @@ class _EditProjectState extends State<EditProject> {
   }
 
  
-// SizedBox(
-//             width: 190,
-//             child: TextField(
-//               style: TextStyle(
-//                 fontSize: 19,
-//               ),
-//               onChanged: (value) {},
-//               maxLines: 1,
-//               maxLength: 30,
-//               decoration: InputDecoration(
-//                 labelStyle:
-//                     TextStyle(fontSize: 15, color: Theme.of(context).hintColor),
-//                 labelText: "Agent name",
-//                 alignLabelWithHint: true,
-//               ),
-//             )),
-//         SizedBox(width: 34),
-//         SizedBox(height: 20),
-//         SizedBox(
-//             width: 290,
-//             child: TextField(
-//               style: TextStyle(
-//                 fontSize: 19,
-//               ),
-//               onChanged: (value) {},
-//               maxLines: 5,
-//               maxLength: 140,
-//               decoration: InputDecoration(
-//                 labelStyle:
-//                     TextStyle(fontSize: 15, color: Theme.of(context).hintColor),
-//                 labelText: "Description",
-//                 alignLabelWithHint: true,
-//               ),
-//             )),
-//         SizedBox(width: 34)
+
 }
 
 class TemporaryConsumer extends HookWidget {

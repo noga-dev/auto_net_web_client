@@ -227,7 +227,7 @@ class MainMenuItem extends HookWidget {
           style: ButtonStyle(
             overlayColor: _getRandomColor(),
             tapTargetSize: MaterialTapTargetSize.padded,
-            fixedSize: MaterialStateProperty.all(Size(140, _assetHeight)),
+            // fixedSize: MaterialStateProperty.all(Size(140, _assetHeight)),
           ),
           onPressed: callback,
           child: Text(text),
