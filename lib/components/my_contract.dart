@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
 class MyContract extends HookWidget {
-  // const MyContract({Key? key}) : super(key: key);
+  const MyContract({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,14 @@ class MyContract extends HookWidget {
         Row(
           children: [
             Text(key.toString()),
-          
-            const VerticalDivider(indent: 4,),
+            const VerticalDivider(
+              indent: 4,
+            ),
             Text(value.toString()),
             const VerticalDivider(width: 4),
-            TextButton(child:Text("SELL"),
-              onPressed:(){},
+            TextButton(
+              child: Text("SELL"),
+              onPressed: () {},
             )
           ],
         ),
@@ -43,7 +45,8 @@ class MyContract extends HookWidget {
                 Row(
                   children: [
                     Text("Available funds: "),
-                    Text(useUser.state.userBalance?.getInEther.toString() ?? 'error' + " ATN"),
+                    Text(useUser.state.userBalance?.getInEther.toString() ??
+                        'error' + " ATN"),
                   ],
                 ),
                 SizedBox(width: 40),
@@ -55,12 +58,12 @@ class MyContract extends HookWidget {
             ),
             SizedBox(height: 50),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-                children: aseturi
-            ),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: aseturi),
             Divider(height: 70),
-            TextButton(child: Text("Developing in TensorFlow? Add your project here."),
-              onPressed: (){},
+            TextButton(
+              child: Text("Developing in TensorFlow? Add your project here."),
+              onPressed: () {},
             )
           ],
         ),

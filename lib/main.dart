@@ -38,7 +38,7 @@ class MyApp extends HookWidget {
         darkTheme: darkTheme,
         themeMode: useProvider(themeModeProvider).state,
         builder: (context, child) {
-          if (MediaQuery.of(context).size.aspectRatio<0.8) {
+          if (MediaQuery.of(context).size.aspectRatio < 0.8) {
             return const Center(
               child: Text('Mobile is not supported'),
             );
@@ -51,15 +51,18 @@ class MyApp extends HookWidget {
         routes: {
           '/': (context) => const LandingScreen(),
           '/assets': (context) => const MyAssets(),
-          '/new':(cntext)=> MainScaffold(child: EditProject(
-            project:Project(
-              name: null,
-              address: null,
-              category: null,
-              description: null,
-              imgUrl: null,
-              github: "https://github.com/openai/gpt-3"
-            ) ,))
+          '/new': (cntext) => MainScaffold(
+                child: EditProject(
+                  project: Project(
+                    name: null,
+                    address: null,
+                    category: null,
+                    description: null,
+                    imgUrl: null,
+                    github: 'https://github.com/openai/gpt-3',
+                  ),
+                ),
+              ),
         },
         initialRoute: '/',
       );

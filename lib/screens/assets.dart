@@ -13,7 +13,7 @@ class MyAssets extends HookWidget {
   Widget build(BuildContext context) {
     final userAddress = useState(ethereum?.selectedAddress);
     final useUser = useProvider(us3r);
-  useUser.state.web3sign();
+    useUser.state.web3sign();
     return MainScaffold(
       child: Center(
         child: Column(
@@ -25,13 +25,13 @@ class MyAssets extends HookWidget {
             ),
             const SizedBox(height: 100),
             Text('balance ${useUser.state.balance}'),
-           useUser.state.user == null
-                ? Text( 'No contract')
+            useUser.state.user == null
+                ? const Text('No contract')
                 : MyContract(),
-            TextButton( 
+            TextButton(
               onPressed: () {
                 useUser.state.web3sign();
-                print("use user state in assets "+useUser.state.toString());
+                print('use user state in assets ${useUser.state}');
               },
               child: const Text('get the details'),
             ),
