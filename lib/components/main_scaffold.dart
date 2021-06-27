@@ -85,7 +85,7 @@ class MainScaffold extends HookWidget {
                           category: null,
                           description: null,
                           imgUrl: null,
-                          github: "https://github.com/openai/gpt-3",
+                          github: 'https://github.com/openai/gpt-3',
                         ),
                       ),
                     ),
