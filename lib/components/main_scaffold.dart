@@ -200,31 +200,18 @@ class MainMenuItem extends HookWidget {
   final String asset;
   final VoidCallback callback;
 
-  bool isTextVisisble = false;
-
   @override
   Widget build(BuildContext context) {
-    final animController = useAnimationController(
-      duration: const Duration(seconds: 1),
-    );
-    return Listener(
-      onPointerHover: (e) {
-        if (e.down) {
-          isTextVisisble = false;
-          animController.forward();
-        } else {
-          isTextVisisble = true;
-          animController.reverse();
-        }
-      },
-      child: AnimatedSwitcher(
-        duration: animController.duration!,
-        transitionBuilder: (child, anim) => SlideTransition(
-          position: Tween(begin: Offset(0, 0), end: Offset(0, 0)).animate(anim),
-          child: child,
-        ),
-        layoutBuilder: (child, _) => child!,
-        child: TextButton.icon(
+    final isHovering = useState(false);
+    return InkWell(
+      onTap: () {},
+      onHover: (e) => isHovering.value = e,
+      child: AnimatedCrossFade(
+        crossFadeState: isHovering.value
+            ? CrossFadeState.showSecond
+            : CrossFadeState.showFirst,
+        duration: const Duration(milliseconds: 250),
+        firstChild: TextButton.icon(
           style: ButtonStyle(
             overlayColor: _getRandomColor(),
           ),
@@ -234,8 +221,35 @@ class MainMenuItem extends HookWidget {
             height: _assetHeight,
           ),
           onPressed: callback,
-          label: Text(text),
+          label: SizedBox(),
         ),
+        secondChild: TextButton(
+          style: ButtonStyle(
+            overlayColor: _getRandomColor(),
+            tapTargetSize: MaterialTapTargetSize.padded,
+            fixedSize: MaterialStateProperty.all(Size(140, _assetHeight)),
+          ),
+          onPressed: callback,
+          child: Text(text),
+        ),
+        firstCurve: Curves.easeIn,
+        secondCurve: Curves.easeOut,
+        layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+          // return isHovering.value ? topChild : bottomChild;
+          return Stack(
+            children: [
+              Positioned(
+                child: bottomChild,
+                top: 0,
+                key: bottomChildKey,
+              ),
+              Positioned(
+                child: topChild,
+                key: topChildKey,
+              ),
+            ],
+          );
+        },
       ),
     );
   }
