@@ -7,22 +7,19 @@ class Project {
     required this.github,
     required this.category,
     required this.mature,
-  }) {
-    // TODO andrei - can't mark this class const because of this ctor body
-    team = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 100};
-    shareholders = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 5};
-    investors = {};
-    split = 5.0;
-  }
-
+    this.investors = const {},
+    this.shareholders = const {},
+    this.team = const {},
+    this.split = 5.0,
+  });
   String? address;
-  late Map<String, double> team;
-  late Map<String, double> shareholders;
-  late Map<String, double> investors;
-  late double split;
+  Map<String, double> team;
+  Map<String, double> shareholders;
+  Map<String, double> investors;
+  bool mature;
+  double split;
   String? name;
   String? description;
-  late bool mature;
   String? imgUrl;
   String? github;
   String? category;

@@ -28,6 +28,7 @@ class MainScaffold extends HookWidget {
     final selectedAddress =
         useState(ethereum?.selectedAddress ?? _addressErrorText);
     final size = MediaQuery.of(context).size;
+    final useUser = useProvider(us3r);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,12 +74,13 @@ class MainScaffold extends HookWidget {
                 text: 'Assets',
                 asset: 'property',
                 callback: () => Beamer.of(context).beamToNamed('/assets'),
+                enabled: selectedAddress.value != _addressErrorText,
               ),
               MainMenuItem(
                 size: size,
                 text: 'Node',
                 asset: 'nlp',
-                callback: () => Beamer.of(context).beamToNamed('/new'),
+                callback: () => Beamer.of(context).beamToNamed('/node'),
               ),
             ],
           ),
@@ -108,16 +110,28 @@ class MainScaffold extends HookWidget {
                 );
                 selectedAddress.value =
                     ethereum?.selectedAddress ?? _addressErrorText;
+                useUser.state.isSignedIn = await useUser.state.web3sign();
               },
               child: selectedAddress.value != _addressErrorText
-                  ? Text(
-                      getShortAddress(selectedAddress.value),
-                      style: TextStyle(
-                        color: themeMode.state == ThemeMode.dark
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    )
+                  ? Builder(builder: (context) {
+                      return TextButton(
+                        onPressed: () => const ScaffoldMessenger(
+                          child: SnackBar(
+                            content: Text('Add Log Off'),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            getShortAddress(selectedAddress.value),
+                            style: TextStyle(
+                              color: themeMode.state == ThemeMode.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                      );
+                    })
                   : SizedBox(
                       width: size.width * .1,
                       height: _assetHeight - 20,
@@ -162,8 +176,10 @@ class MainMenuItem extends HookWidget {
     required this.text,
     required this.asset,
     required this.callback,
+    this.enabled = true,
   }) : super(key: key);
 
+  final bool enabled;
   final Size size;
   final String text;
   final String asset;
@@ -172,55 +188,58 @@ class MainMenuItem extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isHovering = useState(false);
-    return InkWell(
-      onTap: () {},
-      onHover: (e) => isHovering.value = e,
-      child: AnimatedCrossFade(
-        crossFadeState: isHovering.value
-            ? CrossFadeState.showSecond
-            : CrossFadeState.showFirst,
-        duration: const Duration(milliseconds: 250),
-        firstChild: TextButton.icon(
-          style: ButtonStyle(
-            overlayColor: _getRandomColor(),
-            fixedSize: MaterialStateProperty.all(
-              const Size(_assetWidth, _assetHeight),
-            ),
-          ),
-          icon: LottieBuilder.asset(
-            'assets/anim/$asset.zip',
-          ),
-          onPressed: callback,
-          label: const SizedBox(),
-        ),
-        secondChild: TextButton(
-          style: ButtonStyle(
-            overlayColor: _getRandomColor(),
-            tapTargetSize: MaterialTapTargetSize.padded,
-            fixedSize: MaterialStateProperty.all(
-              const Size(_assetWidth, _assetHeight),
-            ),
-          ),
-          onPressed: callback,
-          child: Text(text),
-        ),
-        firstCurve: Curves.easeIn,
-        secondCurve: Curves.easeOut,
-        layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
-          return Stack(
-            children: [
-              Positioned(
-                top: 0,
-                key: bottomChildKey,
-                child: bottomChild,
+    return Tooltip(
+      message: enabled ? text : 'Log in to view your assets',
+      child: InkWell(
+        onTap: () {},
+        onHover: (e) => isHovering.value = e,
+        child: AnimatedCrossFade(
+          crossFadeState: isHovering.value
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 250),
+          firstChild: TextButton.icon(
+            style: ButtonStyle(
+              overlayColor: _getRandomColor(),
+              fixedSize: MaterialStateProperty.all(
+                const Size(_assetWidth, _assetHeight),
               ),
-              Positioned(
-                key: topChildKey,
-                child: topChild,
+            ),
+            icon: LottieBuilder.asset(
+              'assets/anim/$asset.zip',
+            ),
+            onPressed: enabled ? callback : null,
+            label: const SizedBox(),
+          ),
+          secondChild: TextButton(
+            style: ButtonStyle(
+              overlayColor: _getRandomColor(),
+              tapTargetSize: MaterialTapTargetSize.padded,
+              fixedSize: MaterialStateProperty.all(
+                const Size(_assetWidth, _assetHeight),
               ),
-            ],
-          );
-        },
+            ),
+            onPressed: enabled ? callback : null,
+            child: Text(text),
+          ),
+          firstCurve: Curves.easeIn,
+          secondCurve: Curves.easeOut,
+          layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+            return Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  key: bottomChildKey,
+                  child: bottomChild,
+                ),
+                Positioned(
+                  key: topChildKey,
+                  child: topChild,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
