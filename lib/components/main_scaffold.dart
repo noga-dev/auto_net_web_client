@@ -64,7 +64,9 @@ class MainScaffold extends HookWidget {
                 size: size,
                 text: 'Market',
                 asset: 'shopping-cart',
-                callback: () => Beamer.of(context).beamToNamed('/market'),
+                callback: () => Beamer.of(context).beamToNamed(
+                  '/market',
+                ),
               ),
               MainMenuItem(
                 size: size,
