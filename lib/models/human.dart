@@ -12,6 +12,7 @@ class Human {
   EtherAmount? userBalance;
   EtherAmount? balance;
   EtherAmount? contractBalance;
+  bool creatingContract = false;
   String? contractAddress;
   late Web3Provider web3;
   Map<String, double> assets = {};
@@ -30,6 +31,25 @@ class Human {
     'function getAssets() view returns (tuple(address,uint256)[])',
     'function createProject(string, string, string, string, string) '
   ];
+
+  Future<String> buyATN(EtherAmount amount) async {
+    creatingContract = true;
+    var sourceContract = Contract(contractAddress!, sourceAbi, web3);
+    sourceContract = sourceContract.connect(web3.getSigner());
+    final transaction = await promiseToFuture(callMethod(
+        sourceContract, 'buy', [TxParams(value: amount.getInWei.toString())]));
+    final hash = json.decode(stringify(transaction))['hash'];
+    final result =
+        await promiseToFuture(callMethod(web3, 'waitForTransaction', [hash]));
+    if (json.decode(stringify(result))['status'] == 0) {
+      creatingContract = false;
+      throw Exception('something went wrong.');
+    } else {
+      var a = json.decode(stringify(result));
+      creatingContract = false;
+      return a.toString();
+    }
+  }
 
   // ignore: always_declare_return_types
   createContract() async {

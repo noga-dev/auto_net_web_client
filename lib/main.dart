@@ -26,59 +26,67 @@ class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final useChain = useProvider(chain);
-
-    useChain.state.populate();
-
-    final beamerDelegate = BeamerDelegate(
-      notFoundPage: BeamPage(
-        child: MainScaffold(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('404', textScaleFactor: 2),
-                Divider(color: Colors.transparent),
-                Text('Page Not Found'),
-              ],
+    final useBeamerDelegate = useState(
+      BeamerDelegate(
+        notFoundPage: BeamPage(
+          child: MainScaffold(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('404', textScaleFactor: 2),
+                  Divider(color: Colors.transparent),
+                  Text('Page Not Found'),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      locationBuilder: SimpleLocationBuilder(
-        routes: {
-          '/': (context, state) => BeamPage(
-                title: 'Autonet Home',
-                child: const MainScaffold(child: LandingScreen()),
-              ),
-          '/market': (context, state) => BeamPage(
-                title: 'Autonet Market',
-                key: UniqueKey(),
-                child: const MainScaffold(child: Market()),
-              ),
-          '/projects-view': (context, state) => BeamPage(
-                title: 'Autonet Projects',
-                child: const MainScaffold(child: ProjectView()),
-              ),
-          '/assets': (context, state) => BeamPage(
-                key: UniqueKey(),
-                title: 'Autonet Assets',
-                child: const MainScaffold(child: MyAssets()),
-              ),
-          '/new': (context, state) => BeamPage(
-                title: 'Autonet New Project',
-                child: MainScaffold(child: EditProject(project: mockProject)),
-              ),
-          '/project-details/:projectAddres': (context, state) => BeamPage(
-                title: 'Autonet Project Details',
-                child: MainScaffold(
-                  child: ProjectDetails.fromAddres(
-                    projectAddress: state.pathParameters['projectAddres'],
+        // guards: [
+        //   BeamGuard(
+        //     pathBlueprints: ['/'],
+        //     check: (_, __) => false,
+        //     beamToNamed: '/',
+        //   ),
+        // ],
+        locationBuilder: SimpleLocationBuilder(
+          routes: {
+            '/': (context, state) => BeamPage(
+                  title: 'Autonet Home',
+                  child: const MainScaffold(child: LandingScreen()),
+                ),
+            '/market': (context, state) => BeamPage(
+                  title: 'Autonet Market',
+                  key: UniqueKey(),
+                  child: const MainScaffold(child: Market()),
+                ),
+            '/projects-view': (context, state) => BeamPage(
+                  title: 'Autonet Projects',
+                  child: const MainScaffold(child: ProjectView()),
+                ),
+            '/assets': (context, state) => BeamPage(
+                  key: UniqueKey(),
+                  title: 'Autonet Assets',
+                  child: const MainScaffold(child: MyAssets()),
+                ),
+            '/new': (context, state) => BeamPage(
+                  title: 'Autonet New Project',
+                  child: MainScaffold(child: EditProject(project: mockProject)),
+                ),
+            '/project-details/:projectAddres': (context, state) => BeamPage(
+                  title: 'Autonet Project Details',
+                  child: MainScaffold(
+                    child: ProjectDetails.fromAddres(
+                      projectAddress: state.pathParameters['projectAddres'],
+                    ),
                   ),
                 ),
-              ),
-        },
+          },
+        ),
       ),
     );
+
+    useChain.state.populate();
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',
@@ -97,7 +105,7 @@ class MyApp extends HookWidget {
           child: child!,
         );
       },
-      routerDelegate: beamerDelegate,
+      routerDelegate: useBeamerDelegate.value,
     );
   }
 }
