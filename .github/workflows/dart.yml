@@ -18,9 +18,9 @@ jobs:
     strategy:
       matrix:
         channel:
-          - master
+          # - master
           # - dev
-          # - stable
+          - stable
 
     steps:
       - uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
         run: flutter format --set-exit-if-changed .
       - name: Analyze
         run: flutter analyze
-      - uses: Agondev/flutter-gh-pages@v0.1
+      # - uses: Agondev/flutter-gh-pages@v0.1
         # with:
         #   baseHref: /autonet-code/
       - uses: erickzanardo/flutter-gh-pages@v3
