@@ -1,12 +1,13 @@
 import 'package:auto_net/components/project_card.dart';
 import 'package:auto_net/models/project.dart';
+import 'package:auto_net/utils/mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-// ignore: unused_import
 import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class ProjectDetails extends StatefulWidget {
-  const ProjectDetails({
+  ProjectDetails({
     Key? key,
     this.project,
     this.gitSuffix,
@@ -14,9 +15,33 @@ class ProjectDetails extends StatefulWidget {
     this.size,
     this.earned,
     this.descriere,
+    this.projectAddress,
   }) : super(key: key);
 
-  final Project? project;
+  ProjectDetails.fromAddres({
+    Key? key,
+    this.projectAddress,
+    this.gitSuffix,
+    this.readme,
+    this.size,
+    this.earned,
+    this.descriere,
+    this.project,
+  })  : assert(
+          gitSuffix == null &&
+              project == null &&
+              readme == null &&
+              size == null &&
+              earned == null &&
+              descriere == null,
+        ),
+        super(key: key) {
+    // if user accesses through url then do search by addrse
+    project = mockProject;
+  }
+
+  late Project? project;
+  final String? projectAddress;
   final String? gitSuffix;
   final String? readme;
   final int? size;
@@ -32,7 +57,6 @@ class _ProjectDetailsState extends State<ProjectDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print('GITHUB: ${widget.project?.github ?? ''}');
     return Center(
       child: Container(
         padding: const EdgeInsets.all(12),

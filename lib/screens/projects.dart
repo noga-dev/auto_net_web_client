@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// ignore: must_be_immutable
 class ProjectView extends HookWidget {
-  const ProjectView({
-    Key? key,
-  }) : super(key: key);
+  const ProjectView({Key? key}) : super(key: key);
 
   // final String address;
   @override

@@ -10,6 +10,7 @@ class ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         elevation: 4,
         child: TextButton(
+          // TODO route
           onPressed: () => Navigator.of(context).pushNamed(
             // '/market/${project.address}',
             // '/project/${project.address}',

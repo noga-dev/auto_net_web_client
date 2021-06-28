@@ -16,11 +16,11 @@ class Chain {
   Future<bool> populate() async {
     populating = true;
     if (projects.isNotEmpty) {
-      print("Projects is not empty");
+      // print("Projects is not empty");
       populating = false;
       return false;
     } else {
-      print("Projects was empty");
+      // print("Projects was empty");
       var httpClient = Client();
       var ethClient = Web3Client(apiUrl, httpClient);
       final contractSursa = DeployedContract(
@@ -35,7 +35,7 @@ class Chain {
       addressesOfProjects = allProjects[0];
       int counter = 0;
       for (var item in addressesOfProjects) {
-        print("found the project $item and ${counter++}");
+        // print("found the project $item and ${counter++}");
         // print("found the project $item and $counter");
         final projAddr = EthereumAddress.fromHex(item.toString());
         final contractProiect = DeployedContract(

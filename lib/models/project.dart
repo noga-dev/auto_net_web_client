@@ -8,6 +8,7 @@ class Project {
     required this.category,
     required this.mature,
   }) {
+    // TODO andrei - can't mark this class const because of this ctor body
     team = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 100};
     shareholders = {'0xa9F8F9C0bf3188cEDdb9684ae28655187552bAE9': 5};
     investors = {};

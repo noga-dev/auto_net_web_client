@@ -12,11 +12,27 @@ on:
   #   branches: [ master ]
 
 jobs:
-  build:
+  flutter:
     runs-on: ubuntu-latest
+  
+    strategy:
+      matrix:
+        # package:
+          # - flutter_hooks
+        channel:
+          # - dev
+          - stable
 
     steps:
       - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - uses: erickzanardo/flutter-gh-pages@v3
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Check format
+        run: flutter format --set-exit-if-changed .
+      - name: Analyze
+        run: flutter analyze
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
@@ -40,7 +56,3 @@ jobs:
       # want to change this to 'flutter test'.
       # - name: Run tests
       #   run: dart test
-
-      - name: Deploy Flutter web app to github pages
-      - uses: subosito/flutter-action@v1
-      - uses: erickzanardo/flutter-gh-pages@v3

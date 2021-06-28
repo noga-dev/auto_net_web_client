@@ -1,21 +1,18 @@
 import 'dart:js_util';
 import 'dart:math';
 
-import 'package:auto_net/models/project.dart';
-import 'package:auto_net/screens/assets.dart';
-import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
-import 'new_project.dart';
-
 const _addressErrorText = 'addrError';
 const _assetHeight = 80.0;
+const _assetWidth = 140.0;
 
 class MainScaffold extends HookWidget {
   const MainScaffold({
@@ -50,22 +47,15 @@ class MainScaffold extends HookWidget {
                         MaterialStateProperty.all(Colors.transparent),
                     elevation: MaterialStateProperty.all(0),
                   ),
-                  onPressed: () => Navigator.pushReplacement(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, anim1, anim2) =>
-                          const LandingScreen(),
-                      transitionDuration: const Duration(),
-                    ),
-                  ),
+                  onPressed: () => Beamer.of(context).beamToNamed('/'),
                   child: Transform.scale(
                     scale: 1.6,
                     child: Image.asset(
                       // themeMode.state == ThemeMode.light
                       //     ? 'assets/images/logo-black.png' :
                       'assets/images/logo-white.png',
-                      width: size.width * .1,
-                      height: _assetHeight * 2,
+                      width: _assetWidth,
+                      height: _assetHeight,
                     ),
                   ),
                 ),
@@ -74,43 +64,19 @@ class MainScaffold extends HookWidget {
                 size: size,
                 text: 'Market',
                 asset: 'shopping-cart',
-                callback: () => Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, anim1, anim2) => MainScaffold(
-                      child: EditProject(
-                        project: Project(
-                          name: null,
-                          address: null,
-                          category: null,
-                          description: null,
-                          imgUrl: null,
-                          mature: true,
-                          github: 'https://github.com/openai/gpt-3',
-                        ),
-                      ),
-                    ),
-                    transitionDuration: const Duration(),
-                  ),
-                ),
+                callback: () => Beamer.of(context).beamToNamed('/market'),
               ),
               MainMenuItem(
                 size: size,
                 text: 'Assets',
                 asset: 'property',
-                callback: () => Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, anim1, anim2) => const MyAssets(),
-                    transitionDuration: const Duration(),
-                  ),
-                ),
+                callback: () => Beamer.of(context).beamToNamed('/assets'),
               ),
               MainMenuItem(
                 size: size,
                 text: 'Node',
                 asset: 'nlp',
-                callback: () {},
+                callback: () => Beamer.of(context).beamToNamed('/new'),
               ),
             ],
           ),
@@ -215,11 +181,12 @@ class MainMenuItem extends HookWidget {
         firstChild: TextButton.icon(
           style: ButtonStyle(
             overlayColor: _getRandomColor(),
+            fixedSize: MaterialStateProperty.all(
+              const Size(_assetWidth, _assetHeight),
+            ),
           ),
           icon: LottieBuilder.asset(
             'assets/anim/$asset.zip',
-            width: size.width * .1,
-            height: _assetHeight,
           ),
           onPressed: callback,
           label: const SizedBox(),
@@ -228,7 +195,9 @@ class MainMenuItem extends HookWidget {
           style: ButtonStyle(
             overlayColor: _getRandomColor(),
             tapTargetSize: MaterialTapTargetSize.padded,
-            fixedSize: MaterialStateProperty.all(const Size(140, _assetHeight)),
+            fixedSize: MaterialStateProperty.all(
+              const Size(_assetWidth, _assetHeight),
+            ),
           ),
           onPressed: callback,
           child: Text(text),
