@@ -2,6 +2,7 @@ import 'package:auto_net/components/main_scaffold.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
+import 'package:auto_net/screens/node.dart';
 import 'package:auto_net/screens/project_details.dart';
 import 'package:auto_net/utils/mock.dart';
 import 'package:auto_net/utils/theme.dart';
@@ -79,6 +80,12 @@ class MyApp extends HookWidget {
                     child: ProjectDetails.fromAddres(
                       projectAddress: state.pathParameters['projectAddres'],
                     ),
+                  ),
+                ),
+            '/node': (context, state) => BeamPage(
+                  title: 'Autonet New Project',
+                  child: const MainScaffold(
+                    child: Node(),
                   ),
                 ),
           },
