@@ -1,17 +1,16 @@
 import 'package:auto_net/components/main_scaffold.dart';
+import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
 import 'package:auto_net/screens/node.dart';
-import 'package:auto_net/screens/project_details.dart';
-import 'package:auto_net/utils/mock.dart';
+import 'package:auto_net/screens/projects.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'components/new_project.dart';
 import 'screens/projects.dart';
 import 'services/providers.dart';
 
@@ -54,6 +53,7 @@ class MyApp extends HookWidget {
           routes: {
             '/': (context, state) => BeamPage(
                   title: 'Autonet Home',
+                  key: UniqueKey(),
                   child: const MainScaffold(child: LandingScreen()),
                 ),
             '/market': (context, state) => BeamPage(
@@ -61,24 +61,21 @@ class MyApp extends HookWidget {
                   key: UniqueKey(),
                   child: const MainScaffold(child: Market()),
                 ),
-            '/projects-view': (context, state) => BeamPage(
-                  title: 'Autonet Projects',
-                  child: const MainScaffold(child: ProjectView()),
-                ),
             '/assets': (context, state) => BeamPage(
                   key: UniqueKey(),
                   title: 'Autonet Assets',
                   child: const MainScaffold(child: MyAssets()),
                 ),
-            '/new': (context, state) => BeamPage(
+            '/contract': (context, state) => BeamPage(
                   title: 'Autonet New Project',
-                  child: MainScaffold(child: EditProject(project: mockProject)),
+                  child: const MainScaffold(child: MyContract()),
                 ),
-            '/project-details/:projectAddres': (context, state) => BeamPage(
+            '/project/:projectAddress': (context, state) => BeamPage(
                   title: 'Autonet Project Details',
                   child: MainScaffold(
-                    child: ProjectDetails.fromAddres(
-                      projectAddress: state.pathParameters['projectAddres'],
+                    child: ProjectDetailsWrapper(
+                      projectAddress: state.pathParameters['projectAddress'] ??
+                          '0x27a4c07892df16950a5206de35b40a0358de86c0',
                     ),
                   ),
                 ),

@@ -9,8 +9,8 @@ import '../contracts/user.g.dart';
 
 class Human {
   User? user;
-  EtherAmount? userBalance;
-  EtherAmount? balance;
+  bool isSignedIn = false;
+  EtherAmount? walletBalance;
   EtherAmount? contractBalance;
   bool creatingContract = false;
   String? contractAddress;
@@ -81,8 +81,7 @@ class Human {
     }
   }
 
-  // ignore: always_declare_return_types
-  web3sign() async {
+  Future<bool> web3sign() async {
     var se = ethereum!.selectedAddress;
     print('selectedAddress: $se');
     var web3user = Web3Provider(ethereum!);
@@ -100,7 +99,7 @@ class Human {
       var firstAndAHaldf = await callMethod(userContract, 'balanceATN', []);
       tonse = await promiseToFuture(firstAndAHaldf);
       print('from conse we have $tonse');
-      userBalance = EtherAmount.fromUnitAndValue(
+      walletBalance = EtherAmount.fromUnitAndValue(
           EtherUnit.wei, BigInt.parse(tonse.toString()));
       var second = await callMethod(userContract, 'getAssets', []);
       var donse = await promiseToFuture(second);
@@ -115,7 +114,7 @@ class Human {
       }
     }
 
-    balance = EtherAmount.fromUnitAndValue(
+    walletBalance = EtherAmount.fromUnitAndValue(
         EtherUnit.wei, BigInt.parse(catAre.toString()));
     if (!ponse.toString().contains('000000')) {
       // user =User(address: ponse.toString(), user: us3r, assets: assets);
@@ -125,6 +124,8 @@ class Human {
       contractBalance = EtherAmount.fromUnitAndValue(
           EtherUnit.wei, BigInt.parse(tonse.toString()));
     }
+    isSignedIn = true;
+    return true;
   }
 
   // ignore: always_declare_return_types

@@ -1,4 +1,5 @@
 // ignore_for_file: lines_longer_than_80_chars
+import 'package:auto_net/models/human.dart';
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:flutter/material.dart';
@@ -101,10 +102,12 @@ class EditProject extends StatefulWidget {
   const EditProject({
     Key? key,
     required this.project,
+    required this.useUser,
   }) : super(key: key);
+
   final bool textfield = false;
   final bool filepaste = false;
-
+  final Human useUser;
   final bool socket = false;
   final Project project;
   final String url = 'https://discord-ro.tk:5000/v1/post_image';
@@ -123,6 +126,8 @@ class _EditProjectState extends State<EditProject> {
   @override
   void initState() {
     super.initState();
+    print('The contract address of the user ${widget.useUser.contractAddress}');
+    widget.project.team[widget.useUser.contractAddress!] = 5.0;
     textfield = widget.textfield;
     filepaste = widget.filepaste;
     socket = widget.socket;
@@ -132,49 +137,54 @@ class _EditProjectState extends State<EditProject> {
   Widget build(BuildContext context) {
     ownership = [];
     for (var stakeholder in widget.project.team.keys) {
-      ownership.add(TeamMember(
-        project: widget.project,
-        percent: widget.project.team[stakeholder]!.toDouble(),
-        state: this,
-        address: stakeholder,
-      ));
+      ownership.add(
+        TeamMember(
+          project: widget.project,
+          percent: widget.project.team[stakeholder]!.toDouble(),
+          state: this,
+          address: stakeholder,
+        ),
+      );
     }
     return Scrollbar(
       child: SingleChildScrollView(
-          child: Container(
-        margin: const EdgeInsets.all(10),
-        width: MediaQuery.of(context).size.width * 0.8,
-        decoration:
-            BoxDecoration(border: Border.all(width: 1, color: Colors.black)),
-        padding: const EdgeInsets.only(top: 30),
-        child: Column(children: [
-          const Text(
-            'Add new AI project',
-            style: TextStyle(
-              fontSize: 21,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 49),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration:
+              BoxDecoration(border: Border.all(width: 1, color: Colors.black)),
+          padding: const EdgeInsets.only(top: 30),
+          child: Column(
             children: [
-              SizedBox(
-                height: 140,
-                width: 179,
-                child: Image.network('https://i.ibb.co/2dphSM9/cogs.png',
-                    height: 120),
+              const Text(
+                'Add new AI project',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(width: 50),
-              Column(
-                children: [agentName(), agentDescription()],
-              )
+              const SizedBox(height: 49),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 140,
+                    width: 179,
+                    child: Image.network('https://i.ibb.co/2dphSM9/cogs.png',
+                        height: 120),
+                  ),
+                  const SizedBox(width: 50),
+                  Column(
+                    children: [agentName(), agentDescription()],
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              linkGit()
             ],
           ),
-          const SizedBox(height: 20),
-          linkGit()
-        ]),
-      )),
+        ),
+      ),
     );
   }
 
@@ -332,9 +342,10 @@ class _EditProjectState extends State<EditProject> {
                           } else {
                             return SafeArea(
                               child: Markdown(
-                                  data: (snapshot.data as http.Response)
-                                      .body
-                                      .toString()),
+                                data: (snapshot.data as http.Response)
+                                    .body
+                                    .toString(),
+                              ),
                             );
                           }
                         },
@@ -577,9 +588,9 @@ class _EditProjectState extends State<EditProject> {
                                   child: const Text('ADD TEAM MEMBER')),
                             ],
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -599,9 +610,10 @@ class _EditProjectState extends State<EditProject> {
                       child: const Text(
                         'DISCARD',
                         style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -667,9 +679,7 @@ class _EditProjectState extends State<EditProject> {
             maxLength: 30,
             style: const TextStyle(fontSize: 21),
             decoration: const InputDecoration(hintText: 'Set project name'),
-            onChanged: (value) {
-              widget.project.name = value;
-            },
+            onChanged: (value) => widget.project.name = value,
           );
     return SizedBox(
       width: 460,
@@ -704,7 +714,8 @@ class _EditProjectState extends State<EditProject> {
             maxLength: 141,
             maxLines: 3,
             decoration: const InputDecoration(
-                hintText: 'Describe value proposition or utility function.'),
+              hintText: 'Describe value proposition or utility function.',
+            ),
             onChanged: (value) {
               widget.project.description = value;
             },

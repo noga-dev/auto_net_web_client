@@ -13,12 +13,13 @@ class Chain {
   String chainID = '';
   var apiUrl = infuraUrl;
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
+
   Future<bool> populate() async {
     populating = true;
     if (projects.isNotEmpty) {
       // print("Projects is not empty");
       populating = false;
-      return false;
+      return true;
     } else {
       // print("Projects was empty");
       var httpClient = Client();
