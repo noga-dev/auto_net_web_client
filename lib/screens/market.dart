@@ -39,19 +39,17 @@ class Market extends HookWidget {
   }
 }
 
-
 // class Market extends StatelessWidget {
 //   Market({ Key? key }) : super(key: key);
 //   static String route = "/market";
-//   List<Widget> projects=[]; 
+//   List<Widget> projects=[];
 //   @override
 //   Widget build(BuildContext context) {
 //      for (Project p in chain.projects){
 //        projects.add(ProjectCard(p: p));
 //      }
-//     return 
-      
-      
+//     return
+
 //     //   Container(
 //     //   child: Column(children: projects)
 //     // );

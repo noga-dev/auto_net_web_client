@@ -2,8 +2,6 @@
 // @dart=2.12
 import 'package:web3dart/web3dart.dart' as _i1;
 
-
-
 class User extends _i1.GeneratedContract {
   User(
       {required _i1.EthereumAddress address,
@@ -35,7 +33,7 @@ class User extends _i1.GeneratedContract {
   Future<String> createProject(String _name, String _description, String _code,
       String _iconurl, String _category,
       {required _i1.Credentials credentials}) async {
-        print("adding project");
+    print("adding project");
     final function = self.function('createProject');
     final params = [_name, _description, _code, _iconurl, _category];
     final transaction = _i1.Transaction.callContract(
