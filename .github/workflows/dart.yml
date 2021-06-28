@@ -32,9 +32,9 @@ jobs:
       - name: Analyze
         run: flutter analyze
       - uses: Agondev/flutter-gh-pages@v0.1
-        with:
-          baseHref: /autonet-code/
-      # - uses: erickzanardo/flutter-gh-pages@v3
+        # with:
+        #   baseHref: /autonet-code/
+      - uses: erickzanardo/flutter-gh-pages@v3
 
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
