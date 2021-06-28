@@ -25,12 +25,12 @@ class NodeChangeNotifier extends ChangeNotifier {
       // if (contractAddress.length != 42) {
       //   print("Alert message");
       // } else {
-        switchValue = value;
-        timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-          print("tick ${timer.tick}");
-          counter = timer.tick;
-          notifyListeners();
-        });
+      switchValue = value;
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        print('tick ${timer.tick}');
+        counter = timer.tick;
+        notifyListeners();
+      });
       //}
     } else {
       switchValue = value;

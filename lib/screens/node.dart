@@ -1,7 +1,6 @@
 import 'package:auto_net/services/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class Node extends ConsumerWidget {
@@ -32,7 +31,7 @@ class Node extends ConsumerWidget {
                             node.changeSwitchValue(value);
                           }
 
-                          print("onChanged ${node.switchValue}");
+                          print('onChanged ${node.switchValue}');
                           // context.read(nodeProvider).switchValue = value;
                         },
                         activeTrackColor: Colors.lightGreenAccent,
@@ -50,7 +49,7 @@ class Node extends ConsumerWidget {
                           enabled: !node.switchValue,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Contract Address",
+                            labelText: 'Contract Address',
                           ),
                           onSaved: (String? value) {
                             var trimmed = (value ?? '').trim();
@@ -66,7 +65,7 @@ class Node extends ConsumerWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Text("Uptime duration: ${value(node.counter)}"),
+                      Text('Uptime duration: ${value(node.counter)}'),
                     ],
                   ),
                 ),
@@ -91,7 +90,7 @@ class Node extends ConsumerWidget {
 
   String value(int c) {
     var d = Duration(seconds: c);
-    List<String> parts = d.toString().split(':');
+    var parts = d.toString().split(':');
     return '${parts[0]}:${parts[1]}:${parts[2].split('.')[0]}';
   }
 }

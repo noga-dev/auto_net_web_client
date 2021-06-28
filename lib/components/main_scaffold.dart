@@ -92,11 +92,13 @@ class MainScaffold extends HookWidget {
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(60),
+                    borderRadius: BorderRadius.circular(
+                      60,
+                    ),
                   ),
                 ),
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                elevation: MaterialStateProperty.all(0),
+                backgroundColor: _getRandomColor(),
+                elevation: MaterialStateProperty.all(.7),
                 overlayColor: _getRandomColor(),
               ),
               onPressed: () async {
@@ -105,8 +107,9 @@ class MainScaffold extends HookWidget {
                   return;
                 }
                 await promiseToFuture(
-                  ethereum!
-                      .request(RequestParams(method: 'eth_requestAccounts')),
+                  ethereum!.request(
+                    RequestParams(method: 'eth_requestAccounts'),
+                  ),
                 );
                 selectedAddress.value =
                     ethereum?.selectedAddress ?? _addressErrorText;
@@ -115,8 +118,9 @@ class MainScaffold extends HookWidget {
               child: selectedAddress.value != _addressErrorText
                   ? Builder(builder: (context) {
                       return TextButton(
-                        onPressed: () => const ScaffoldMessenger(
-                          child: SnackBar(
+                        onPressed: () =>
+                            ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
                             content: Text('Add Log Off'),
                           ),
                         ),

@@ -69,7 +69,7 @@ class Chain {
           name: details[0].toString(),
           description: details[1].toString(),
           imgUrl: imgUrl,
-          mature: counter == 0,
+          mature: counter++ % 2 == 0,
           category: category,
           github: gitLink,
         );

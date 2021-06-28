@@ -197,10 +197,14 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                               },
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.all(30),
-                            child: AgentProgress(),
-                          ),
+                          widget.project?.mature ?? true
+                              ? Hire(
+                                  project: widget.project!,
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.all(30),
+                                  child: AgentProgress(),
+                                ),
                           const Icon(Icons.bar_chart_outlined, size: 350),
                         ],
                       ),
@@ -297,117 +301,106 @@ class AgentProgress extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                SizedBox(
-                    height: 55,
-                    width: 200,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          backgroundColor: Theme.of(context).hoverColor),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  content: Container(
-                                    width: 600,
-                                    height: 600,
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: const [
-                                            Text(
-                                              'Available funds your contract:',
-                                            ),
-                                            SizedBox(width: 9),
-                                            Text(
-                                              '3124 ATN',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 30,
-                                        ),
-                                        SizedBox(
-                                          width: 110,
-                                          child: TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 19),
-                                            keyboardType: const TextInputType
-                                                    .numberWithOptions(
-                                                decimal: true, signed: false),
-                                            onChanged: (value) {},
-                                            decoration: const InputDecoration(
-                                              labelStyle: TextStyle(
-                                                fontSize: 15,
-                                              ),
-                                              labelText: 'Enter Value',
-                                              alignLabelWithHint: true,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        Column(
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 70,
-                                              ),
-                                              child: const Text(
-                                                // ignore: lines_longer_than_80_chars
-                                                "You are acquiring shares in project GPT-3. This transaction is irrevocable. You may put up your shares for sale once the training is complete, and you will be reimbursed if the model doesn't achieve the targeted accuracy within the specified timeframe.",
-                                              ),
-                                            ),
-                                            const SizedBox(height: 30),
-                                            SizedBox(
-                                              width: 290,
-                                              height: 50,
-                                              child: TextButton(
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                    const Color(0xff851339),
-                                                  ),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  'COMMIT TO BLOCKCHAIN',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                TextButton.icon(
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(.8),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    ),
+                  ),
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: Container(
+                        width: 600,
+                        height: 600,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  'Available funds your contract:',
+                                ),
+                                SizedBox(width: 9),
+                                Text(
+                                  '3124 ATN',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              width: 110,
+                              child: TextFormField(
+                                style: const TextStyle(fontSize: 19),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(
+                                        decimal: true, signed: false),
+                                onChanged: (value) {},
+                                decoration: const InputDecoration(
+                                  labelStyle: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                  labelText: 'Enter Value',
+                                  alignLabelWithHint: true,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 70,
+                                  ),
+                                  child: const Text(
+                                    // ignore: lines_longer_than_80_chars
+                                    "You are acquiring shares in project GPT-3. This transaction is irrevocable. You may put up your shares for sale once the training is complete, and you will be reimbursed if the model doesn't achieve the targeted accuracy within the specified timeframe.",
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
+                                SizedBox(
+                                  width: 290,
+                                  height: 50,
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        const Color(0xff851339),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'COMMIT TO BLOCKCHAIN',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.school),
-                          SizedBox(width: 10),
-                          Text(
-                            'INVEST IN TRAINING',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ))
+                    ),
+                  ),
+                  icon: const Icon(Icons.school),
+                  label: const Text(
+                    'INVEST IN TRAINING',
+                  ),
+                ),
               ],
             ),
           ),

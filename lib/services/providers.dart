@@ -4,13 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../services/chain.dart';
 import 'node.dart';
 
-final StateProvider<ThemeMode> themeModeProvider =
-    StateProvider<ThemeMode>((ProviderReference ref) => ThemeMode.dark);
+final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.dark);
 
-final StateProvider<Human> us3r =
-    StateProvider<Human>((ProviderReference ref) => Human());
+final us3r = StateProvider<Human>((ref) => Human());
 
-final StateProvider<Chain> chain =
-    StateProvider<Chain>((ProviderReference ref) => Chain());
+final chain = StateProvider<Chain>((ref) => Chain());
 
 final nodeProvider = ChangeNotifierProvider((ref) => NodeChangeNotifier());

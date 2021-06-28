@@ -4,14 +4,13 @@ import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
 import 'package:auto_net/screens/node.dart';
-import 'package:auto_net/screens/projects.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'screens/projects.dart';
+import 'screens/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {
@@ -42,13 +41,6 @@ class MyApp extends HookWidget {
             ),
           ),
         ),
-        // guards: [
-        //   BeamGuard(
-        //     pathBlueprints: ['/'],
-        //     check: (_, __) => false,
-        //     beamToNamed: '/',
-        //   ),
-        // ],
         locationBuilder: SimpleLocationBuilder(
           routes: {
             '/': (context, state) => BeamPage(
