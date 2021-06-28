@@ -122,7 +122,7 @@ class MainScaffold extends HookWidget {
                       width: size.width * .1,
                       height: _assetHeight - 20,
                       child: Image.network(
-                        'assets/images/metamask.png',
+                        'assets/assets/images/metamask.png',
                       ),
                     ),
             ),
