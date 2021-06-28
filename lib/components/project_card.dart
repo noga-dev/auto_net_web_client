@@ -1,4 +1,5 @@
 import 'package:auto_net/models/project.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 class ProjectCard extends StatelessWidget {
@@ -10,12 +11,8 @@ class ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         elevation: 4,
         child: TextButton(
-          // TODO route
-          onPressed: () => Navigator.of(context).pushNamed(
-            // '/market/${project.address}',
-            // '/project/${project.address}',
-            '/project',
-            arguments: project,
+          onPressed: () => Beamer.of(context).beamToNamed(
+            '/project/projectAddress=${project.address}',
           ),
           child: SizedBox(
             width: 400,
