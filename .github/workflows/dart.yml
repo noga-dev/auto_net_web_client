@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: gh-pages
 
 on:
   push:
@@ -27,8 +27,8 @@ jobs:
       - uses: subosito/flutter-action@v1
       - name: Install dependencies
         run: flutter pub get
-      - name: Check format
-        run: flutter format --set-exit-if-changed .
+      # - name: Check format
+      #   run: flutter format --set-exit-if-changed .
       - name: Analyze
         run: flutter analyze
       - uses: Agondev/flutter-gh-pages@main

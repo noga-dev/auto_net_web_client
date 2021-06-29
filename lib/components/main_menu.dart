@@ -204,7 +204,7 @@ class MainMenuItem extends HookWidget {
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 250),
-          firstChild: TextButton.icon(
+          secondChild: TextButton.icon(
             style: ButtonStyle(
               overlayColor: _getRandomColor(),
               fixedSize: MaterialStateProperty.all(
@@ -217,7 +217,7 @@ class MainMenuItem extends HookWidget {
             onPressed: enabled ? callback : null,
             label: const SizedBox(),
           ),
-          secondChild: TextButton(
+          firstChild: TextButton(
             style: ButtonStyle(
               overlayColor: _getRandomColor(),
               tapTargetSize: MaterialTapTargetSize.padded,
@@ -230,17 +230,17 @@ class MainMenuItem extends HookWidget {
           ),
           firstCurve: Curves.easeIn,
           secondCurve: Curves.easeOut,
-          layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) {
+          layoutBuilder: (firstChild, firstKey, secondChild, secondKey) {
             return Stack(
               children: [
                 Positioned(
-                  top: 0,
-                  key: bottomChildKey,
-                  child: bottomChild,
+                  key: secondKey,
+                  child: secondChild,
                 ),
                 Positioned(
-                  key: topChildKey,
-                  child: topChild,
+                  top: 0,
+                  key: firstKey,
+                  child: firstChild,
                 ),
               ],
             );
