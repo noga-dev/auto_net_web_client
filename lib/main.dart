@@ -15,8 +15,8 @@ import 'screens/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {
-  if (const String.fromEnvironment('hostDest') == 'githubPages') {
-  } else {
+  // uses the command line arguments specified in the gh-actions file (.github/workflows/dart.yml)
+  if (const String.fromEnvironment('hostDest') != 'githubPages') {
     setPathUrlStrategy();
   }
 
