@@ -1,5 +1,6 @@
 import 'package:auto_net/components/new_project.dart';
 import 'package:auto_net/services/providers.dart';
+import 'package:auto_net/utils/common.dart';
 import 'package:auto_net/utils/mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,13 +11,11 @@ class MyContract extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useUser = useProvider(us3r);
+    final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
 
-    if (useUser.state.user == null) {
-      return const Center(
-        child: Text('Not signed in'),
-      );
+    if (!useProvider(isSignedInProvider).state) {
+      return page403;
     }
 
     useUser.state.assets.forEach((key, value) {

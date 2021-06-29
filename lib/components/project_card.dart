@@ -42,6 +42,7 @@ class ProjectCard extends StatelessWidget {
                         children: [
                           Text(
                             project.name ?? '',
+                            overflow: TextOverflow.fade,
                             style: const TextStyle(
                               fontSize: 21,
                               fontWeight: FontWeight.bold,

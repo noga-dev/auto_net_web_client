@@ -744,7 +744,7 @@ class TemporaryConsumer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useUser = useProvider(us3r);
+    final useUser = useProvider(userProvider);
 
     // useUser.state.web3sign();
 

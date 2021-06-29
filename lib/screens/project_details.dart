@@ -19,9 +19,9 @@ class ProjectDetailsWrapper extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useChain = useProvider(chain);
+    final useChain = useProvider(chainProvider);
 
-    for (var project in useChain.state.projects) {
+    for (var project in useChain.projects) {
       if (projectAddress.contains(project.address!)) {
         return ProjectDetails(project: project);
       }

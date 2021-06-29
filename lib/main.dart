@@ -1,10 +1,14 @@
-import 'package:auto_net/components/main_scaffold.dart';
+import 'package:auto_net/components/main_menu.dart';
 import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
 import 'package:auto_net/screens/node.dart';
+<<<<<<< HEAD
 import 'package:auto_net/utils/mock.dart';
+=======
+import 'package:auto_net/utils/common.dart';
+>>>>>>> e558430b8dfe80f8e0d447563af4264684bdcca2
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
@@ -15,59 +19,75 @@ import 'screens/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {
-  setPathUrlStrategy();
+  // uses the command line arguments specified in the gh-actions file (.github/workflows/dart.yml)
+  if (const String.fromEnvironment('hostDest') != 'githubPages') {
+    setPathUrlStrategy();
+  }
 
   runApp(const ProviderScope(child: MyApp()));
 }
+
+const _appBar = MainAppBar();
 
 class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final useChain = useProvider(chain);
+    final useUser = useProvider(userProvider);
+    final useIsSignedIn = useProvider(isSignedInProvider);
     final useBeamerDelegate = useState(
       BeamerDelegate(
+        transitionDelegate: const NoAnimationTransitionDelegate(),
         notFoundPage: BeamPage(
-          child: MainScaffold(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('404', textScaleFactor: 2),
-                  Divider(color: Colors.transparent),
-                  Text('Page Not Found'),
-                ],
-              ),
-            ),
+          child: Scaffold(
+            appBar: _appBar,
+            body: page404,
           ),
         ),
         locationBuilder: SimpleLocationBuilder(
           routes: {
             '/': (context, state) => BeamPage(
-                  title: 'Autonet Home',
                   key: UniqueKey(),
+<<<<<<< HEAD
                   // ignore: lines_longer_than_80_chars
                   child:  MainScaffold(child: LandingScreen()),
+=======
+                  title: 'Autonet Home',
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: LandingScreen(),
+                  ),
+>>>>>>> e558430b8dfe80f8e0d447563af4264684bdcca2
                 ),
             '/market': (context, state) => BeamPage(
-                  title: 'Autonet Market',
                   key: UniqueKey(),
-                  child: const MainScaffold(child: Market()),
+                  title: 'Autonet Market',
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: Market(),
+                  ),
                 ),
             '/assets': (context, state) => BeamPage(
                   key: UniqueKey(),
                   title: 'Autonet Assets',
-                  child: const MainScaffold(child: MyAssets()),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: MyAssets(),
+                  ),
                 ),
             '/contract': (context, state) => BeamPage(
                   title: 'Autonet New Project',
-                  child: const MainScaffold(child: MyContract()),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: MyContract(),
+                  ),
                 ),
             '/project/:projectAddress': (context, state) => BeamPage(
                   title: 'Autonet Project Details',
-                  child: MainScaffold(
-                    child: ProjectDetailsWrapper(
+                  child: Scaffold(
+                    appBar: _appBar,
+                    body: ProjectDetailsWrapper(
                       projectAddress: state.pathParameters['projectAddress'] ??
                           '0x27a4c07892df16950a5206de35b40a0358de86c0',
                     ),
@@ -75,8 +95,9 @@ class MyApp extends HookWidget {
                 ),
             '/node': (context, state) => BeamPage(
                   title: 'Autonet New Project',
-                  child: const MainScaffold(
-                    child: Node(),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: Node(),
                   ),
                 ),
           },
@@ -84,7 +105,10 @@ class MyApp extends HookWidget {
       ),
     );
 
-    useChain.state.populate();
+    if (!useIsSignedIn.state) {
+      useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
+    }
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',

@@ -11,24 +11,30 @@ class Market extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useChain = useProvider(chain);
+    final useChain = useProvider(chainProvider);
     final useProjects = useState(<Widget>[]);
 
     return FutureBuilder(
-      future: useChain.state.populate(),
+      future: useChain.populate(),
       builder: (context, snap) {
         if (!snap.hasData) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else {
           if (!(snap.data as bool)) {
             return const Center(child: Text('Failed to fetch data'));
           } else {
             if (useProjects.value.isEmpty) {
-              for (var project in useChain.state.projects) {
+              for (var project in useChain.projects) {
                 useProjects.value.add(ProjectCard(project: project));
               }
             }
             return GridView.count(
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 20,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 80,
+                vertical: 20,
+              ),
               crossAxisCount: useProjects.value.length % 2 == 0 ? 2 : 3,
               children: useProjects.value,
             );
