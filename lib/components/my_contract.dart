@@ -1,5 +1,6 @@
 import 'package:auto_net/components/new_project.dart';
 import 'package:auto_net/services/providers.dart';
+import 'package:auto_net/utils/common.dart';
 import 'package:auto_net/utils/mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,13 +14,11 @@ class MyContract extends HookWidget {
     final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
 
-    if (useUser.user == null) {
-      return const Center(
-        child: Text('Not signed in'),
-      );
+    if (!useProvider(isSignedInProvider).state) {
+      return page403;
     }
 
-    useUser.assets.forEach((key, value) {
+    useUser.state.assets.forEach((key, value) {
       useAseturi.value.add(
         Row(
           children: [
@@ -54,7 +53,7 @@ class MyContract extends HookWidget {
                     children: [
                       const Text('Available funds: '),
                       Text(
-                        useUser.walletBalance?.getInEther.toString() ??
+                        useUser.state.walletBalance?.getInEther.toString() ??
                             'error ATN',
                       ),
                     ],
@@ -69,7 +68,7 @@ class MyContract extends HookWidget {
                           ) {
                             return EditProject(
                               project: mockProject,
-                              useUser: useUser,
+                              useUser: useUser.state,
                             );
                           });
                     },

@@ -30,8 +30,10 @@ class MyAssets extends HookWidget {
                 : userAddress.value ?? 'err',
           ),
           const SizedBox(height: 100),
-          Text('balance ${useUser.walletBalance}'),
-          useUser.user == null ? const Text('No contract') : const MyContract(),
+          Text('balance ${useUser.state.walletBalance}'),
+          useUser.state.user == null
+              ? const Text('No contract')
+              : const MyContract(),
           TextButton(
             onPressed: () {
               // useUser.state.web3sign();
@@ -50,7 +52,7 @@ class MyAssets extends HookWidget {
                       ..investors = {}
                       ..team = {}
                       ..split = 5.0,
-                    useUser: useUser,
+                    useUser: useUser.state,
                   ),
                 ),
               );
@@ -73,7 +75,7 @@ class CreateContractButton extends StatelessWidget {
     return SizedBox(
       child: Center(
         child: Text(
-          useUser.user == null ? 'No contract' : 'Contract is here',
+          useUser.state.user == null ? 'No contract' : 'Contract is here',
         ),
       ),
     );

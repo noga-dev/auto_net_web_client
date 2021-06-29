@@ -8,7 +8,7 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.dark);
 
 final isSignedInProvider = StateProvider<bool>((ref) => false);
 
-final userProvider = Provider((ref) => Human());
+final userProvider = StateProvider((ref) => Human());
 
 final chainProvider = Provider((ref) => Chain());
 

@@ -219,12 +219,14 @@ class BuyTokenDialog extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(
-          'Funds in your wallet: ${useUser.walletBalance?.getValueInUnit(EtherUnit.ether)} ETH',
+          'Funds in your wallet: ${useUser.state.walletBalance?.getValueInUnit(EtherUnit.ether)} ETH',
         ),
         Text(
-          (useUser.walletBalance?.getValueInUnit(EtherUnit.finney) ?? 0) >= 2500
+          (useUser.state.walletBalance?.getValueInUnit(EtherUnit.finney) ??
+                      0) >=
+                  2500
               ? 'Maximum amount you can buy: ${2500} ATN'
-              : 'Maximum amount you can buy: ${useUser.walletBalance?.getValueInUnit(EtherUnit.finney)} ATN',
+              : 'Maximum amount you can buy: ${useUser.state.walletBalance?.getValueInUnit(EtherUnit.finney)} ATN',
           style: const TextStyle(fontSize: 19),
         ),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -284,14 +286,14 @@ class BuyTokenDialog extends HookWidget {
                       width: 500,
                       height: MediaQuery.of(context).size.height * 0.7,
                       child: FutureBuilder(
-                        future: useUser.buyATN(
+                        future: useUser.state.buyATN(
                           EtherAmount.fromUnitAndValue(
                             EtherUnit.finney,
                             useDiff.value,
                           ),
                         ),
                         builder: (context, snapshot) {
-                          if (useUser.creatingContract) {
+                          if (useUser.state.creatingContract) {
                             return const Center(
                               child: SizedBox(
                                 height: 140,

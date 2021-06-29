@@ -1,4 +1,4 @@
-import 'package:auto_net/components/main_scaffold.dart';
+import 'package:auto_net/components/main_menu.dart';
 import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
@@ -23,6 +23,8 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
+const _appBar = MainAppBar();
+
 class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -32,36 +34,51 @@ class MyApp extends HookWidget {
     final useIsSignedIn = useProvider(isSignedInProvider);
     final useBeamerDelegate = useState(
       BeamerDelegate(
+        transitionDelegate: const NoAnimationTransitionDelegate(),
         notFoundPage: BeamPage(
-          child: MainScaffold(
-            child: page404,
+          child: Scaffold(
+            appBar: _appBar,
+            body: page404,
           ),
         ),
         locationBuilder: SimpleLocationBuilder(
           routes: {
             '/': (context, state) => BeamPage(
-                  title: 'Autonet Home',
                   key: UniqueKey(),
-                  child: const MainScaffold(child: LandingScreen()),
+                  title: 'Autonet Home',
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: LandingScreen(),
+                  ),
                 ),
             '/market': (context, state) => BeamPage(
-                  title: 'Autonet Market',
                   key: UniqueKey(),
-                  child: const MainScaffold(child: Market()),
+                  title: 'Autonet Market',
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: Market(),
+                  ),
                 ),
             '/assets': (context, state) => BeamPage(
                   key: UniqueKey(),
                   title: 'Autonet Assets',
-                  child: const MainScaffold(child: MyAssets()),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: MyAssets(),
+                  ),
                 ),
             '/contract': (context, state) => BeamPage(
                   title: 'Autonet New Project',
-                  child: const MainScaffold(child: MyContract()),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: MyContract(),
+                  ),
                 ),
             '/project/:projectAddress': (context, state) => BeamPage(
                   title: 'Autonet Project Details',
-                  child: MainScaffold(
-                    child: ProjectDetailsWrapper(
+                  child: Scaffold(
+                    appBar: _appBar,
+                    body: ProjectDetailsWrapper(
                       projectAddress: state.pathParameters['projectAddress'] ??
                           '0x27a4c07892df16950a5206de35b40a0358de86c0',
                     ),
@@ -69,8 +86,9 @@ class MyApp extends HookWidget {
                 ),
             '/node': (context, state) => BeamPage(
                   title: 'Autonet New Project',
-                  child: const MainScaffold(
-                    child: Node(),
+                  child: const Scaffold(
+                    appBar: _appBar,
+                    body: Node(),
                   ),
                 ),
           },
@@ -79,7 +97,7 @@ class MyApp extends HookWidget {
     );
 
     if (!useIsSignedIn.state) {
-      useUser.web3sign().then((value) => useIsSignedIn.state = value);
+      useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
     }
 
     return MaterialApp.router(

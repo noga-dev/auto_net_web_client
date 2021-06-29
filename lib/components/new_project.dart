@@ -759,7 +759,7 @@ class TemporaryConsumer extends HookWidget {
               project.description != null &&
               project.github != null) {
             // print('user state: ${useUser.state}');
-            useUser.createProject(
+            useUser.state.createProject(
               project.name!,
               project.description!,
               project.github!,
