@@ -6,8 +6,10 @@ import 'node.dart';
 
 final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.dark);
 
-final us3r = StateProvider<Human>((ref) => Human());
+final isSignedInProvider = StateProvider<bool>((ref) => false);
 
-final chain = StateProvider<Chain>((ref) => Chain());
+final userProvider = ChangeNotifierProvider((ref) => Human());
+
+final chainProvider = ChangeNotifierProvider((ref) => Chain());
 
 final nodeProvider = ChangeNotifierProvider((ref) => NodeChangeNotifier());

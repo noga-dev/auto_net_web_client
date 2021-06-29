@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:very_good_analysis/very_good_analysis.dart';
 
 const _addressErrorText = 'addrError';
 const _assetHeight = 80.0;
@@ -28,7 +29,8 @@ class MainScaffold extends HookWidget {
     final selectedAddress =
         useState(ethereum?.selectedAddress ?? _addressErrorText);
     final size = MediaQuery.of(context).size;
-    final useUser = useProvider(us3r);
+    final useUser = useProvider(userProvider);
+    final useIsSignedInProvider = useProvider(isSignedInProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -113,7 +115,10 @@ class MainScaffold extends HookWidget {
                 );
                 selectedAddress.value =
                     ethereum?.selectedAddress ?? _addressErrorText;
-                useUser.state.isSignedIn = await useUser.state.web3sign();
+
+                unawaited(useUser
+                    .web3sign()
+                    .then((value) => useIsSignedInProvider.state = value));
               },
               child: selectedAddress.value != _addressErrorText
                   ? Builder(builder: (context) {

@@ -2,9 +2,12 @@
 import 'package:auto_net/services/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
+import 'package:web3dart/web3dart.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:web3dart/web3dart.dart';
+
+const _addressErrorText = 'addrError';
 
 class LandingScreen extends HookWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -55,10 +58,10 @@ class BuyToken extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useChain = useProvider(chain);
-    final useUser = useProvider(us3r);
-    final useError = useState('');
-    final useDiff = useState(.0);
+    final useChain = useProvider(chainProvider);
+    // final useUser = useProvider(us3r);
+    final selectedAddress =
+        useState(ethereum?.selectedAddress ?? _addressErrorText);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +104,7 @@ class BuyToken extends HookWidget {
                     onPressed: () {
                       Clipboard.setData(
                         ClipboardData(
-                          text: useChain.state.tokenAddress,
+                          text: useChain.tokenAddress,
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -166,182 +169,16 @@ class BuyToken extends HookWidget {
             backgroundColor: Theme.of(context).buttonColor,
             elevation: 1,
           ),
-          onPressed: !useUser.state.isSignedIn
+          onPressed: selectedAddress.value == _addressErrorText
               ? null
               : () {
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
+                    builder: (context) => const AlertDialog(
                       content: SizedBox(
                         height: 500,
                         width: 500,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              'Funds in your wallet: ${useUser.state.walletBalance?.getValueInUnit(EtherUnit.ether)} ETH',
-                            ),
-                            Text(
-                              (useUser.state.walletBalance?.getValueInUnit(
-                                              EtherUnit.finney) ??
-                                          0) >=
-                                      2500
-                                  ? 'Maximum amount you can buy: ${2500} ATN'
-                                  : 'Maximum amount you can buy: ${useUser.state.walletBalance?.getValueInUnit(EtherUnit.finney)} ATN',
-                              style: const TextStyle(fontSize: 19),
-                            ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    'Amount to buy: ',
-                                    style: TextStyle(fontSize: 19),
-                                  ),
-                                  SizedBox(
-                                      width: 100,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                          fontSize: 19,
-                                        ),
-                                        onChanged: (value) {
-                                          double.tryParse(value) != null
-                                              // ignore: unnecessary_statements
-                                              ? {
-                                                  useDiff.value =
-                                                      double.parse(value),
-                                                  if (useDiff.value > 2500)
-                                                    {useDiff.value = 2500}
-                                                }
-                                              : useDiff.value = 0;
-                                        },
-                                        maxLines: 1,
-                                        maxLength: 10,
-                                        decoration: const InputDecoration(
-                                          labelStyle: TextStyle(fontSize: 15),
-                                          labelText: 'Enter',
-                                          alignLabelWithHint: true,
-                                        ),
-                                      )),
-                                  const Text(
-                                    'ATN',
-                                    style: TextStyle(fontSize: 19),
-                                  ),
-                                ]),
-                            Text(
-                              useError.value,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                            const SizedBox(height: 40),
-                            SizedBox(
-                              width: 100,
-                              height: 50,
-                              child: TextButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
-                                onPressed: () async {
-                                  if (useDiff.value != 0) {
-                                    Navigator.of(context).pop();
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        content: SizedBox(
-                                          width: 500,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.7,
-                                          child: FutureBuilder(
-                                            future: useUser.state.buyATN(
-                                              EtherAmount.fromUnitAndValue(
-                                                EtherUnit.finney,
-                                                useDiff.value,
-                                              ),
-                                            ),
-                                            builder: (context, shapshot) {
-                                              if (useUser
-                                                  .state.creatingContract) {
-                                                return const Center(
-                                                  child: SizedBox(
-                                                    height: 140,
-                                                    width: 140,
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                );
-                                              } else {
-                                                return Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    const Text(
-                                                        'Transaction complete!',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Mono',
-                                                            fontSize: 18)),
-                                                    const SizedBox(height: 10),
-                                                    const SizedBox(height: 10),
-                                                    Container(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 85),
-                                                      child: const Text(
-                                                        "If you don't already have ATN in your wallet, add a custom token with the following address:",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'Roboto Mono'),
-                                                      ),
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(useChain.state
-                                                            .tokenAddress),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Clipboard.setData(
-                                                            ClipboardData(
-                                                              text: useChain
-                                                                  .state
-                                                                  .tokenAddress,
-                                                            ),
-                                                          ),
-                                                          child: const Icon(
-                                                              Icons.copy),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    const SizedBox(width: 30),
-                                                  ],
-                                                );
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    useError.value = 'INVALID AMOUNT';
-                                  }
-                                },
-                                child: const Text(
-                                  'BUY ATN',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                        child: BuyTokenDialog(),
                       ),
                     ),
                   );
@@ -357,15 +194,156 @@ class BuyToken extends HookWidget {
                   height: 30,
                 ),
                 const SizedBox(width: 7),
-                const Text(
-                  'Buy ATN',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                const Text('Buy ATN'),
               ],
             ),
           ),
         ),
         const SizedBox(height: 30)
+      ],
+    );
+  }
+}
+
+class BuyTokenDialog extends HookWidget {
+  const BuyTokenDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final useChain = useProvider(chainProvider);
+    final useUser = useProvider(userProvider);
+    final useError = useState('');
+    final useDiff = useState(.0);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          'Funds in your wallet: ${useUser.walletBalance?.getValueInUnit(EtherUnit.ether)} ETH',
+        ),
+        Text(
+          (useUser.walletBalance?.getValueInUnit(EtherUnit.finney) ?? 0) >= 2500
+              ? 'Maximum amount you can buy: ${2500} ATN'
+              : 'Maximum amount you can buy: ${useUser.walletBalance?.getValueInUnit(EtherUnit.finney)} ATN',
+          style: const TextStyle(fontSize: 19),
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Text(
+            'Amount to buy: ',
+            style: TextStyle(fontSize: 19),
+          ),
+          SizedBox(
+              width: 100,
+              child: TextField(
+                style: const TextStyle(
+                  fontSize: 19,
+                ),
+                onChanged: (value) {
+                  double.tryParse(value) != null
+                      // ignore: unnecessary_statements
+                      ? {
+                          useDiff.value = double.parse(value),
+                          if (useDiff.value > 2500) {useDiff.value = 2500}
+                        }
+                      : useDiff.value = 0;
+                },
+                maxLines: 1,
+                maxLength: 10,
+                decoration: const InputDecoration(
+                  labelStyle: TextStyle(fontSize: 15),
+                  labelText: 'Enter',
+                  alignLabelWithHint: true,
+                ),
+              )),
+          const Text(
+            'ATN',
+            style: TextStyle(fontSize: 19),
+          ),
+        ]),
+        Text(
+          useError.value,
+          style: const TextStyle(color: Colors.red),
+        ),
+        const SizedBox(height: 40),
+        SizedBox(
+          width: 100,
+          height: 50,
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),
+            ),
+            onPressed: () async {
+              if (useDiff.value == 0) {
+                useError.value = 'INVALID AMOUNT';
+              } else {
+                Navigator.of(context).pop();
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content: SizedBox(
+                      width: 500,
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: FutureBuilder(
+                        future: useUser.buyATN(
+                          EtherAmount.fromUnitAndValue(
+                            EtherUnit.finney,
+                            useDiff.value,
+                          ),
+                        ),
+                        builder: (context, snapshot) {
+                          if (useUser.creatingContract) {
+                            return const Center(
+                              child: SizedBox(
+                                height: 140,
+                                width: 140,
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Text('Transaction complete!'),
+                                const SizedBox(height: 10),
+                                const SizedBox(height: 10),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 85,
+                                  ),
+                                  child: const Text(
+                                    "If you don't already have ATN in your wallet, add a custom token with the following address:",
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton.icon(
+                                      onPressed: () => Clipboard.setData(
+                                        ClipboardData(
+                                          text: useChain.tokenAddress,
+                                        ),
+                                      ),
+                                      label: Text(useChain.tokenAddress),
+                                      icon: const Icon(
+                                        Icons.copy,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 30),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+            child: const Text('Buy'),
+          ),
+        ),
       ],
     );
   }

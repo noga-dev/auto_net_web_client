@@ -10,16 +10,16 @@ class MyContract extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useUser = useProvider(us3r);
+    final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
 
-    if (useUser.state.user == null) {
+    if (useUser.user == null) {
       return const Center(
         child: Text('Not signed in'),
       );
     }
 
-    useUser.state.assets.forEach((key, value) {
+    useUser.assets.forEach((key, value) {
       useAseturi.value.add(
         Row(
           children: [
@@ -54,7 +54,7 @@ class MyContract extends HookWidget {
                     children: [
                       const Text('Available funds: '),
                       Text(
-                        useUser.state.walletBalance?.getInEther.toString() ??
+                        useUser.walletBalance?.getInEther.toString() ??
                             'error ATN',
                       ),
                     ],
@@ -69,7 +69,7 @@ class MyContract extends HookWidget {
                           ) {
                             return EditProject(
                               project: mockProject,
-                              useUser: useUser.state,
+                              useUser: useUser,
                             );
                           });
                     },

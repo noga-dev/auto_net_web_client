@@ -4,6 +4,7 @@ import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
 import 'package:auto_net/screens/node.dart';
+import 'package:auto_net/utils/common.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
@@ -24,21 +25,13 @@ class MyApp extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useChain = useProvider(chain);
+    final useUser = useProvider(userProvider);
+    final useIsSignedIn = useProvider(isSignedInProvider);
     final useBeamerDelegate = useState(
       BeamerDelegate(
         notFoundPage: BeamPage(
           child: MainScaffold(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Text('404', textScaleFactor: 2),
-                  Divider(color: Colors.transparent),
-                  Text('Page Not Found'),
-                ],
-              ),
-            ),
+            child: page404,
           ),
         ),
         locationBuilder: SimpleLocationBuilder(
@@ -82,7 +75,10 @@ class MyApp extends HookWidget {
       ),
     );
 
-    useChain.state.populate();
+    if (!useIsSignedIn.state) {
+      useUser.web3sign().then((value) => useIsSignedIn.state = value);
+    }
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',

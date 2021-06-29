@@ -744,7 +744,7 @@ class TemporaryConsumer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useUser = useProvider(us3r);
+    final useUser = useProvider(userProvider);
 
     // useUser.state.web3sign();
 
@@ -759,7 +759,7 @@ class TemporaryConsumer extends HookWidget {
               project.description != null &&
               project.github != null) {
             // print('user state: ${useUser.state}');
-            useUser.state.createProject(
+            useUser.createProject(
               project.name!,
               project.description!,
               project.github!,
