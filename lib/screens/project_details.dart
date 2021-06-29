@@ -1,3 +1,4 @@
+//ignore_for_file: lines_longer_than_80_chars
 import 'package:auto_net/components/project_card.dart';
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
@@ -201,7 +202,8 @@ class _ProjectDetailsState extends State<ProjectDetails> {
                               ? Hire(
                                   project: widget.project!,
                                 )
-                              : const Padding(
+                              : 
+                              const Padding(
                                   padding: EdgeInsets.all(30),
                                   child: AgentProgress(),
                                 ),
@@ -226,38 +228,239 @@ class Hire extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 600,
-      child: Column(
+    
+    return Container(
+      child: Column(children:[
+        Container(
+          padding:EdgeInsets.all(30) ,
+          decoration: BoxDecoration(border:Border.all(width: 1)),
+          child: Column(
+            crossAxisAlignment:CrossAxisAlignment.center,
+            children: [
+              Text("PROGRAMMATIC ACCESS",style:TextStyle(fontSize:13,fontWeight: FontWeight.bold )),
+              SizedBox(height:35),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text("RPC Endpoint: "),
+                SizedBox(width:30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+               SizedBox(width: 300,child: Text('ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/0xff23S9D8SAD9238DCDWQCDW33521',
+               style: TextStyle(fontSize:9),
+               )),
+                TextButton(
+                  child:Icon(Icons.copy),
+                  onPressed:(){}
+                  )
+              ])
+              ],),
+            ],
+          )
+        ),
+     const SizedBox(height:30),
+        Container(
+          padding: EdgeInsets.all(13),
+          child:
+            Interact(which: project.name=="GPT-3"? "nlp":"chat",)
+        )
+      ],
+    ));
+  }
+}
+class Entity{
+  Entity({required this.name,required this.type});
+  late String name;
+  late String type;
+  Widget view(){return Container(
+    height:35,
+    padding: EdgeInsets.symmetric(vertical:5),
+    child:Row(children: [
+   SizedBox(
+     width:200,
+     child: Text('Name: $name')),
+   const SizedBox(width:10),
+   SizedBox(
+     width:250,
+     child: Text('Type: $type')),
+  ],));
+  }
+}
+class Interact extends StatefulWidget {
+  Interact({ Key? key ,required this.which}) : super(key: key);
+  final String nlpUrl = 'https://discord-ro.tk:5000/v1/nlp';
+  final String chatUrl = 'https://discord-ro.tk:5000/v1/chat';
+  final String? which;
+  String positive="";
+  String negative="";
+  String mixed="";
+  String neutral="";
+  String aiResponse="";
+  Widget air=Container();
+  List<Widget>entities=[];
+  
+  @override
+  _InteractState createState() => _InteractState();
+}
+
+class _InteractState extends State<Interact> {
+  var c=TextEditingController();
+  
+  List<Widget>? nlp;
+   List<Widget>? chat;
+   Widget sentiment(){
+     return SizedBox(
+       width:600,
+    child:Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: const[
+       Text('Positive:'),
+        Text('Negative:'),
+        Text('Mixed:'),
+        Text('Neutral:'),
+      ]),
+      SizedBox(width: 10),
+     Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:[
+        Text(widget.positive),
+        Text(widget.negative),
+        Text(widget.mixed),
+        Text(widget.neutral),
+      ]), 
+    ],)
+  );
+   }
+  @override
+  void initState() { 
+     widget.entities=[];
+    super.initState();
+    nlp=[
+    SizedBox(
+       width:170,height:29,
+       child: TextButton(onPressed: ()async{
+         var ha=await nlpRequest(c.text, "entities");
+         ha=ha.replaceAll("\n","");
+ha=ha.replaceAll(" ","");
+ha=ha.replaceAll("\\","");
+var toateNumele=ha.split('Text":');
+var toateTipurile=ha.split('Type":');
+print (toateTipurile);
+var names=[];
+var types=[];
+int n=0;
+int m=0;
+for (var a in toateNumele){
+  m=m+1;
+  if (m==1){continue;}
+  var name=a.split(',')[0];
+  print(name);
+  names.add(name);
+}
+for (var a in toateTipurile){
+  n=n+1;
+  if (n==1){continue;}
+  var type=a.split('"')[1];
+  types.add(type);
+  widget.entities.add(Entity(name: names[n-2], type: types[n-2]).view());
+}
+         setState((){
+           
+           widget.air=Container(child: Column(
+             children: widget.entities,
+           ),);
+         });
+       }, child: Text("ENTITIES"))),
+    SizedBox(width: 10),
+    SizedBox(
+       width:170,height:29,
+       child: TextButton(onPressed: ()async{
+         var ha=await nlpRequest(c.text, "sentiment");
+
+
+          setState((){
+
+ha=ha.replaceAll("\n","");
+ha=ha.replaceAll(" ","");
+ha=ha.split("SentimentScore")[1];
+print("we're already here");
+print(ha);
+widget.negative=ha.split('Negative\\":')[1].split(",")[0];
+print("negative: "+widget.negative);
+print("after the first split");
+widget.neutral=ha.split('Neutral\\":')[1].split(",")[0]; 
+widget.mixed=ha.split('Mixed\\":')[1].split(",")[0];
+widget.positive=ha.split('Positive\\":')[1].split("\\n}")[0];
+          widget.air=sentiment();
+         });
+       }, child: Text("SENTIMENT"))),
+    SizedBox(width: 10),
+    SizedBox(
+       width:170,height:29,
+       child: TextButton(onPressed: ()async{
+        var response= await nlpRequest(c.text, "synthax");
+          setState((){
+           widget.aiResponse=response;
+         });
+       }, child: Text("SYNTHAX"))),
+  ];
+ chat=[
+    SizedBox(
+       width:200,height:29,
+       child: TextButton(onPressed: ()async{
+         var response=await chatRequest(c.text, "appolo");
+          setState(() {
+            widget.air=Text(response,style:TextStyle(fontSize:widget.which=="nlp"?14:19));
+         });
+       }, child: Text("SEND MESSAGE")))];
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    var sc=ScrollController();
+    return Scrollbar(
+      controller:sc,
+      child:SingleChildScrollView(child: Container(
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.center,
         children: [
-          Container(
-            decoration: BoxDecoration(border: Border.all(width: 1)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: const [
-                    Text('RPC Endpoint:'),
-                    Text('Access token:'),
-                  ],
-                ),
-                const SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/${project.address}',
-                    ),
-                    const Text('Xan499F'),
-                  ],
-                ),
-              ],
-            ),
+           SizedBox(
+              width:500,
+              height: 150,
+              child: TextField(
+                controller: c,
+                maxLines: 5,
+              ),),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.which=='nlp'?nlp!:chat!),
+          SizedBox(height: 45),
+          SizedBox(width: 580,
+          child: Center(child:widget.air
+          )
           )
         ],
-      ),
-    );
+      )
+    )));
+  }
+    Future<String> nlpRequest(text, type) async {
+    var querystring = {"text": text,"type":type};
+    Uri uri = Uri.parse(widget.nlpUrl);
+    
+    http.Response resp = await http.get(uri.replace(queryParameters: querystring),);
+    print('What comes back is ${resp.body}');
+    return resp.body.toString();
+  }
+     Future<String> chatRequest(zice, uid) async {
+    var querystring = {"zice": zice};
+    Uri uri = Uri.parse(widget.chatUrl);
+    http.Response resp = await http.get(uri.replace(queryParameters: querystring),);
+    print('What comes back is ${resp.body.split('"')[3]}');
+    return resp.body.split('"')[3];
   }
 }
 
@@ -361,7 +564,6 @@ class AgentProgress extends StatelessWidget {
                                     horizontal: 70,
                                   ),
                                   child: const Text(
-                                    // ignore: lines_longer_than_80_chars
                                     "You are acquiring shares in project GPT-3. This transaction is irrevocable. You may put up your shares for sale once the training is complete, and you will be reimbursed if the model doesn't achieve the targeted accuracy within the specified timeframe.",
                                   ),
                                 ),
