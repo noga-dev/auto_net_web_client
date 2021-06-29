@@ -4,11 +4,7 @@ import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
 import 'package:auto_net/screens/node.dart';
-<<<<<<< HEAD
-import 'package:auto_net/utils/mock.dart';
-=======
 import 'package:auto_net/utils/common.dart';
->>>>>>> e558430b8dfe80f8e0d447563af4264684bdcca2
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
@@ -49,16 +45,11 @@ class MyApp extends HookWidget {
           routes: {
             '/': (context, state) => BeamPage(
                   key: UniqueKey(),
-<<<<<<< HEAD
-                  // ignore: lines_longer_than_80_chars
-                  child:  MainScaffold(child: LandingScreen()),
-=======
                   title: 'Autonet Home',
                   child: const Scaffold(
                     appBar: _appBar,
                     body: LandingScreen(),
                   ),
->>>>>>> e558430b8dfe80f8e0d447563af4264684bdcca2
                 ),
             '/market': (context, state) => BeamPage(
                   key: UniqueKey(),
