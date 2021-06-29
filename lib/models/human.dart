@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:js_util';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
@@ -8,7 +7,7 @@ import 'package:flutter_web3_provider/ethers.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/user.g.dart';
 
-class Human extends ChangeNotifier {
+class Human {
   User? user;
   EtherAmount? walletBalance;
   EtherAmount? contractBalance;
@@ -75,7 +74,6 @@ class Human extends ChangeNotifier {
         BigInt.parse(tonse.toString()),
       );
     }
-    // notifyListeners();
     return true;
   }
 

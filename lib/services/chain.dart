@@ -5,7 +5,7 @@ import '../models/abi.dart';
 import '../models/project.dart';
 import 'package:flutter/material.dart';
 
-class Chain extends ChangeNotifier {
+class Chain {
   List<Project> projects = [];
   bool populating = false;
   bool populated = false;

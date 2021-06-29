@@ -15,7 +15,10 @@ import 'screens/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {
-  setPathUrlStrategy();
+  if (const String.fromEnvironment('hostDest') == 'githubPages') {
+  } else {
+    setPathUrlStrategy();
+  }
 
   runApp(const ProviderScope(child: MyApp()));
 }

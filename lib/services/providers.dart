@@ -8,8 +8,8 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.dark);
 
 final isSignedInProvider = StateProvider<bool>((ref) => false);
 
-final userProvider = ChangeNotifierProvider((ref) => Human());
+final userProvider = Provider((ref) => Human());
 
-final chainProvider = ChangeNotifierProvider((ref) => Chain());
+final chainProvider = Provider((ref) => Chain());
 
 final nodeProvider = ChangeNotifierProvider((ref) => NodeChangeNotifier());
