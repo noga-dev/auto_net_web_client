@@ -4,6 +4,7 @@ import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/mock.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,13 +21,11 @@ class ProjectDetailsWrapper extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final useChain = useProvider(chainProvider);
-
     for (var project in useChain.projects) {
       if (projectAddress.contains(project.address!)) {
         return ProjectDetails(project: project);
       }
     }
-
     return ProjectDetails(project: mockProject);
   }
 }
@@ -222,23 +221,33 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   }
 }
 
-class Hire extends StatelessWidget {
-  const Hire({Key? key, required this.project}) : super(key: key);
+class Hire extends HookWidget {
+ 
+  Hire({Key? key, required this.project}) : super(key: key);
   final Project project;
 
   @override
   Widget build(BuildContext context) {
-    
+    final useUser = useProvider(userProvider);
+  final userAddress = useState(ethereum?.selectedAddress);
     return Container(
       child: Column(children:[
-        Container(
-          padding:EdgeInsets.all(30) ,
-          decoration: BoxDecoration(border:Border.all(width: 1)),
-          child: Column(
+        SizedBox(height: 20),
+        SizedBox(
+          width:590,
+          height: 190,
+       child: Card(
+          elevation: 3.0,
+          // padding:EdgeInsets.all(30),
+          // decoration: BoxDecoration(border:Border.all(width: 1)),
+          child:SizedBox(
+            height:370,
+            child: Column(
             crossAxisAlignment:CrossAxisAlignment.center,
             children: [
+               SizedBox(height: 30),
               Text("PROGRAMMATIC ACCESS",style:TextStyle(fontSize:13,fontWeight: FontWeight.bold )),
-              SizedBox(height:35),
+              SizedBox(height:19),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -247,7 +256,7 @@ class Hire extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
-               SizedBox(width: 300,child: Text('ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/0xff23S9D8SAD9238DCDWQCDW33521',
+               SizedBox(width: 300,child: Text('ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/${project.address}',
                style: TextStyle(fontSize:9),
                )),
                 TextButton(
@@ -256,8 +265,29 @@ class Hire extends StatelessWidget {
                   )
               ])
               ],),
+              SizedBox(height:11),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text("Access token: "),
+                SizedBox(width:30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+               SizedBox(width: 300,
+               child: useUser.state.user!=null? Text('Xm8fwd8411G9A7',
+               style: TextStyle(fontSize:9),
+               ):(Text("(Sign in and create a contract)",style: TextStyle(fontSize: 13),))),
+                TextButton(
+                  child:useUser.state.user!=null? Icon(Icons.copy):SizedBox(width:20),
+                  onPressed:(){}
+                  )
+              ])
+              ],),
             ],
           )
+          )
+        ),
         ),
      const SizedBox(height:30),
         Container(
