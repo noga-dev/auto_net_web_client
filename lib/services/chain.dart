@@ -9,7 +9,7 @@ class Chain {
   bool isPpopulating = false;
   bool isPopulated = false;
   late List addressesOfProjects;
-  late String tokenAddress; // TODO(EightRice): can this be hardcoded?
+  late String tokenAddress;
   String chainID = '';
   var apiUrl = infuraUrl;
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
