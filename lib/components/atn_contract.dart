@@ -8,29 +8,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-
-
-
-
-// ignore: use_key_in_widget_constructors
-// ignore: must_be_immutable
 class MyContractView extends HookWidget {
- // ignore: use_key_in_widget_constructors
-  
+  const MyContractView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
-    final useChain=useProvider(chainProvider);
-     final themeMode = useProvider(themeModeProvider);
+    final useChain = useProvider(chainProvider);
+    final themeMode = useProvider(themeModeProvider);
+
     useUser.state.assets.forEach((key, value) {
-      for(var p in useChain.state.projects){
-        if (p.address!.toLowerCase()==key.toLowerCase()){
-          useAseturi.value.add(
-            asset(p, value,context)
-            );
+      for (var p in useChain.state.projects) {
+        if (p.address!.toLowerCase() == key.toLowerCase()) {
+          useAseturi.value.add(asset(p, value, context));
         }
       }
+
       print('length ${useAseturi.value.length}');
     });
     return MediaQuery(
@@ -45,7 +39,9 @@ class MyContractView extends HookWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-      color: themeMode.state==ThemeMode.light?Colors.black54:Colors.white54,
+                  color: themeMode.state == ThemeMode.light
+                      ? Colors.black54
+                      : Colors.white54,
                   width: 1,
                 ),
               ),
@@ -53,7 +49,9 @@ class MyContractView extends HookWidget {
                 children: [
                   Container(
                     height: 200,
-       color: themeMode.state==ThemeMode.light?Colors.black54:Colors.white54,
+                    color: themeMode.state == ThemeMode.light
+                        ? Colors.black54
+                        : Colors.white54,
                     child: Center(
                       child: Column(
                         children: [
@@ -119,13 +117,15 @@ class MyContractView extends HookWidget {
                                       Text(useUser.state.contractAddress!,
                                           style: TextStyle(
                                             fontFamily: 'Roboto Mono',
-                                      color: Theme.of(context).canvasColor,
+                                            color:
+                                                Theme.of(context).canvasColor,
                                           )),
                                       TextButton(
                                         onPressed: () {
                                           Clipboard.setData(
                                             ClipboardData(
-                                        text: useUser.state.contractAddress!,
+                                              text: useUser
+                                                  .state.contractAddress!,
                                             ),
                                           );
                                           ScaffoldMessenger.of(context)
@@ -138,7 +138,8 @@ class MyContractView extends HookWidget {
                                                 child: Align(
                                                   alignment: Alignment.center,
                                                   child: Text(
-                                     'Contract address was copied to cliboard.',
+                                                    // ignore: lines_longer_than_80_chars
+                                                    'Contract address was copied to cliboard.',
                                                     style:
                                                         TextStyle(fontSize: 20),
                                                   ),
@@ -156,7 +157,8 @@ class MyContractView extends HookWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                    '${useUser.state.contractBalance!.getInEther} ATN',
+                                    // ignore: lines_longer_than_80_chars
+                                    '${useUser.state.contractBalance!.getInEther} ATN',
                                     style: TextStyle(
                                       fontFamily: 'Roboto Mono',
                                       color: Theme.of(context).canvasColor,
@@ -271,19 +273,19 @@ class MyContractView extends HookWidget {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          content:EditProject(
-                          project: mockProject
-                      ..shareholders = {}
-                      ..investors = {}
-                      ..team = {}
-                      ..split = 5.0,
-                    useUser: useUser.state,
-                  ),
+                          content: EditProject(
+                            project: mockProject
+                              ..shareholders = {}
+                              ..investors = {}
+                              ..team = {}
+                              ..split = 5.0,
+                            useUser: useUser.state,
+                          ),
                         ),
                       );
                     },
-                    child:const Text(
-            'Developing in TensorFlow? Add your project.',
+                    child: const Text(
+                      'Developing in TensorFlow? Add your project.',
                       style: TextStyle(
                         fontSize: 13,
                       ),
@@ -298,18 +300,19 @@ class MyContractView extends HookWidget {
       ),
     );
   }
+
   Widget withdraw(useUser) {
     // double diff;
     // bool acceptat = false;
     return SizedBox(
       height: 500,
-      width:500,
+      width: 500,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text( 
+          Text(
 // ignore: lines_longer_than_80_chars
-'Contract is currently holding: ${useUser.state.contractBalance.getInEther} ATN',
+            'Contract is currently holding: ${useUser.state.contractBalance.getInEther} ATN',
             style: const TextStyle(fontSize: 19),
           ),
           Row(
@@ -448,7 +451,7 @@ class MyContractView extends HookWidget {
     );
   }
 
-  Widget asset(Project p, percent,context) => Container(
+  Widget asset(Project p, percent, context) => Container(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -460,15 +463,13 @@ class MyContractView extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextButton(
-                    onPressed: () {
-                     
-                    },
+                    onPressed: () {},
                     child: Text(
                       p.name!,
                       style: const TextStyle(
-              fontSize: 17, 
-                fontWeight: FontWeight.bold,
-              ),
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   )
                 ],
@@ -496,14 +497,17 @@ class MyContractView extends HookWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                        width: 1, ),
+                      width: 1,
+                    ),
                   ),
                   child: TextButton(
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       'SELL',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold)
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

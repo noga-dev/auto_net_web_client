@@ -1,3 +1,5 @@
+// ignore_for_file: use_full_hex_values_for_flutter_colors
+
 import 'package:auto_net/components/main_menu.dart';
 import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/screens/assets.dart';
@@ -27,25 +29,7 @@ const _appBar = MainAppBar();
 
 class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
-    MaterialColor createMaterialColor(Color color) {
-    List strengths = <double>[.05];
-    Map swatch = <int, Color>{};
-    final int r = color.red, g = color.green, b = color.blue;
 
-    for (int i = 1; i < 10; i++) {
-      strengths.add(0.1 * i);
-    }
-    strengths.forEach((strength) {
-      final double ds = 0.5 - strength;
-      swatch[(strength * 1000).round()] = Color.fromRGBO(
-        r + ((ds < 0 ? r : (255 - r)) * ds).round(),
-        g + ((ds < 0 ? g : (255 - g)) * ds).round(),
-        b + ((ds < 0 ? b : (255 - b)) * ds).round(),
-        1,
-      );
-    });
-    return MaterialColor(color.value, swatch as Map<int,Color>);
-  }
   @override
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
@@ -119,33 +103,12 @@ class MyApp extends HookWidget {
       useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
       useChain.state.retrieveTokenAddress();
     }
-      var light = ThemeData(
-        brightness: Brightness.light,
-        dividerColor: createMaterialColor(Color(0xff4454238)),
-        hintColor: Colors.black87,
-        primaryColor: createMaterialColor(Color(0xffffffff)),
-        primarySwatch: createMaterialColor(Color(0xff4d4d4d)),
-        highlightColor: Color(0xff6e6e6e),
-        backgroundColor: createMaterialColor(Color(0xeecacaca)),
-        accentColor: Color(0xffe0deda),
-        canvasColor: Color(0xfff0f0f0));
-
-    var dark = ThemeData(
-      buttonColor: createMaterialColor(Color(0xff505663)),
-      dividerColor: createMaterialColor(Color(0xffcfc099)),
-      brightness: Brightness.dark,
-      hintColor: Colors.white70,
-      accentColor: createMaterialColor(Color(0xff383736)),
-      primaryColor: createMaterialColor(Color(0xff4d4d4d)),
-      primarySwatch: createMaterialColor(Color(0xffefefef)),
-      highlightColor: Color(0xff6e6e6e),
-    );
 
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',
-      theme: light,
-      darkTheme: dark,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
       themeMode: useProvider(themeModeProvider).state,
       routeInformationParser: BeamerParser(),
       builder: (context, child) {

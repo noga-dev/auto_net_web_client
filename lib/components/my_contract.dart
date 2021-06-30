@@ -13,8 +13,8 @@ class MyContract extends HookWidget {
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
-    final useErc20 =
-        useFuture(useUser.state.getErc20()); // TODO(Agon): continue from here
+    // TODO(Agon): continue from here
+    final useErc20 = useFuture(useUser.state.getErc20());
 
     useEffect(() {}, []);
 
