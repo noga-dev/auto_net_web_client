@@ -6,6 +6,7 @@ import 'package:auto_net/utils/mock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 
@@ -242,52 +243,74 @@ class _ProjectDetailsState extends State<ProjectDetails> {
   }
 }
 
-class Hire extends StatelessWidget {
+class Hire extends HookWidget {
   const Hire({Key? key, required this.project}) : super(key: key);
   final Project project;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(30),
-            decoration: BoxDecoration(border: Border.all(width: 1)),
+  final useUser = useProvider(userProvider);
+  final userAddress = useState(ethereum?.selectedAddress);
+  return Container(
+      child: Column(children:[
+        SizedBox(height: 20),
+        SizedBox(
+          width:590,
+          height: 190,
+       child: Card(
+          elevation: 3.0,
+          // padding:EdgeInsets.all(30),
+          // decoration: BoxDecoration(border:Border.all(width: 1)),
+          child:SizedBox(
+            height:370,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text('PROGRAMMATIC ACCESS',
-                    style:
-                        TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 35),
+            crossAxisAlignment:CrossAxisAlignment.center,
+            children: [
+               SizedBox(height: 30),
+              Text("PROGRAMMATIC ACCESS",style:TextStyle(fontSize:13,fontWeight: FontWeight.bold )),
+              SizedBox(height:19),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text("RPC Endpoint: "),
+                SizedBox(width:30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+               SizedBox(width: 300,child: Text('ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/${project.address}',
+               style: TextStyle(fontSize:9),
+               )),
+                TextButton(
+                  child:Icon(Icons.copy),
+                  onPressed:(){}
+                  )
+              ])
+              ],),
+              SizedBox(height:11),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('RPC Endpoint: '),
-                    const SizedBox(width: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          width: 300,
-                          child: Text(
-                            'ec2-35-178-211-27.eu-west-2.compute.amazonaws.com:5000/v1/0xff23S9D8SAD9238DCDWQCDW33521',
-                            style: TextStyle(fontSize: 9),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Icon(Icons.copy),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 30),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                Text("Access token: "),
+                SizedBox(width:30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[
+               SizedBox(width: 300,
+               child: useUser.state.user!=null? Text('Xm8fwd8411G9A7',
+               style: TextStyle(fontSize:9),
+               ):(Text("(Sign in and create a contract)",style: TextStyle(fontSize: 13),))),
+                TextButton(
+                  child:useUser.state.user!=null? Icon(Icons.copy):SizedBox(width:20),
+                  onPressed:(){}
+                  )
+              ])
+              ],),
+            ],
+          )
+          )
+        ),
+        ),
+        SizedBox(height:19),
           Container(
             padding: const EdgeInsets.all(13),
             child: Interact(

@@ -1,7 +1,6 @@
 import 'dart:js_util';
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:beamer/beamer.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
-
 const _addressErrorText = 'addrError';
 const _assetHeight = 80.0;
 const _assetWidth = 140.0;
