@@ -1,7 +1,6 @@
 // ignore_for_file: use_full_hex_values_for_flutter_colors
 
 import 'package:auto_net/components/main_menu.dart';
-import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/screens/assets.dart';
 import 'package:auto_net/screens/landing.dart';
 import 'package:auto_net/screens/market.dart';
@@ -68,13 +67,6 @@ class MyApp extends HookWidget {
                   child: const Scaffold(
                     appBar: _appBar,
                     body: MyAssets(),
-                  ),
-                ),
-            '/contract': (context, state) => BeamPage(
-                  title: 'Autonet New Project',
-                  child: const Scaffold(
-                    appBar: _appBar,
-                    body: MyContract(),
                   ),
                 ),
             '/project/:projectAddress': (context, state) => BeamPage(
