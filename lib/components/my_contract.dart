@@ -13,6 +13,10 @@ class MyContract extends HookWidget {
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
+    final useErc20 =
+        useFuture(useUser.state.getErc20()); // TODO(Agon): continue from here
+
+    useEffect(() {}, []);
 
     if (!useProvider(isSignedInProvider).state) {
       return page403;
@@ -42,53 +46,58 @@ class MyContract extends HookWidget {
       width: 700,
       child: Card(
         child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('AUTONET USER CONTRACT'),
-              const Divider(height: 40),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      const Text('Available funds: '),
-                      Text(
-                        useUser.state.walletBalance?.getInEther.toString() ??
-                            'error ATN',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 40),
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (
-                            context,
-                          ) {
-                            return EditProject(
-                              project: mockProject,
-                              useUser: useUser.state,
-                            );
-                          });
-                    },
-                    child: const Text('WIDTHDRAW'),
-                  )
-                ],
-              ),
-              const SizedBox(height: 50),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: useAseturi.value,
-              ),
-              const Divider(height: 70),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Developing in TensorFlow? Add your project here.',
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Autonet user contract'.toUpperCase(),
                 ),
-              )
-            ],
+                const Divider(height: 40),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        const Text('Available funds: '),
+                        Text(useErc20.data.toString()
+                            // ignore: lines_longer_than_80_chars
+                            // useUser.state.walletBalance?.getInEther.toString() ?? 'error ATN',
+                            ),
+                      ],
+                    ),
+                    const SizedBox(width: 40),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (
+                              context,
+                            ) {
+                              return EditProject(
+                                project: mockProject,
+                                useUser: useUser.state,
+                              );
+                            });
+                      },
+                      child: const Text('WIDTHDRAW'),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 50),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: useAseturi.value,
+                ),
+                const Divider(height: 70),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Developing in TensorFlow? Add your project here.',
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

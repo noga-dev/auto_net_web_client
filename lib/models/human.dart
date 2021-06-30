@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:flutter_web3_provider/ethers.dart';
+import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/user.g.dart';
 
@@ -30,6 +31,20 @@ class Human {
     'function getAssets() view returns (tuple(address,uint256)[])',
     'function createProject(string, string, string, string, string) '
   ];
+
+  Future<BigInt> getErc20() async {
+    var erc20 = Erc20(
+      address: EthereumAddress.fromHex(ethereum!.selectedAddress),
+      client: web3infura,
+    );
+
+    var balance = await erc20.balanceOf(
+      EthereumAddress.fromHex(ethereum!.selectedAddress),
+    );
+
+    print(balance);
+    return balance;
+  }
 
   Future<bool> web3sign() async {
     var selectedAddress = ethereum!.selectedAddress;
@@ -74,6 +89,7 @@ class Human {
         BigInt.parse(tonse.toString()),
       );
     }
+    // print(contractBalance);
     return true;
   }
 

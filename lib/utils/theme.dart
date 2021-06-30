@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 final darkTheme = ThemeData.dark().copyWith(
@@ -17,6 +19,16 @@ final lightTheme = ThemeData.light().copyWith(
   textButtonTheme: _textButtonThemeData,
 );
 
+MaterialStateProperty<Color> getRandomMaterialStateColor() =>
+    MaterialStateProperty.all(
+      Colors.primaries[Random().nextInt(Colors.primaries.length)]
+          .withOpacity(.25),
+    );
+
+Color getRandomMaterialColor() =>
+    Colors.primaries[Random().nextInt(Colors.primaries.length)]
+        .withOpacity(.25);
+
 final _textButtonThemeData = TextButtonThemeData(
   style: ButtonStyle(
     textStyle: MaterialStateProperty.all(
@@ -31,5 +43,12 @@ final _textButtonThemeData = TextButtonThemeData(
         horizontal: 32,
       ),
     ),
+  ),
+);
+
+final buttonStyle = ButtonStyle(
+  backgroundColor: getRandomMaterialStateColor(),
+  minimumSize: MaterialStateProperty.all(
+    const Size(200, 50),
   ),
 );

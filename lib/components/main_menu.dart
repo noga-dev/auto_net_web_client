@@ -1,8 +1,8 @@
 import 'dart:js_util';
-import 'dart:math';
 import 'dart:ui';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
+import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
+
 const _addressErrorText = 'addrError';
 const _assetHeight = 80.0;
 const _assetWidth = 140.0;
@@ -40,7 +41,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
               message: 'Home',
               child: ElevatedButton(
                 style: ButtonStyle(
-                  overlayColor: _getRandomMaterialStateColor(),
+                  overlayColor: getRandomMaterialStateColor(),
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent),
                   elevation: MaterialStateProperty.all(0),
@@ -94,9 +95,9 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                   ),
                 ),
               ),
-              backgroundColor: _getRandomMaterialStateColor(),
+              backgroundColor: getRandomMaterialStateColor(),
               elevation: MaterialStateProperty.all(.7),
-              overlayColor: _getRandomMaterialStateColor(),
+              overlayColor: getRandomMaterialStateColor(),
             ),
             onPressed: () async {
               if (ethereum == null ||
@@ -121,6 +122,15 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                       return FocusTraversalGroup(
                         descendantsAreFocusable: false,
                         child: TextButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  60,
+                                ),
+                              ),
+                            ),
+                          ),
                           onPressed: () {},
                           child: Center(
                             child: Text(
@@ -152,7 +162,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
             child: Transform.scale(
               scale: 1.2,
               child: Switch(
-                overlayColor: _getRandomMaterialStateColor(),
+                overlayColor: getRandomMaterialStateColor(),
                 activeThumbImage: const AssetImage('assets/images/sun.png'),
                 inactiveThumbImage:
                     const AssetImage('assets/images/new_moon.png'),
@@ -197,7 +207,7 @@ class MainMenuItem extends HookWidget {
       message: enabled ? text : 'Log in to view your assets',
       child: InkWell(
         onTap: enabled ? callback : null,
-        focusColor: _getRandomMaterialColor(),
+        focusColor: getRandomMaterialColor(),
         onHover: (e) => isHovering.value = e,
         child: AnimatedCrossFade(
           crossFadeState: isHovering.value
@@ -206,7 +216,7 @@ class MainMenuItem extends HookWidget {
           duration: const Duration(milliseconds: 250),
           secondChild: TextButton.icon(
             style: ButtonStyle(
-              overlayColor: _getRandomMaterialStateColor(),
+              overlayColor: getRandomMaterialStateColor(),
               fixedSize: MaterialStateProperty.all(
                 const Size(_assetWidth, _assetHeight),
               ),
@@ -219,7 +229,7 @@ class MainMenuItem extends HookWidget {
           ),
           firstChild: TextButton(
             style: ButtonStyle(
-              overlayColor: _getRandomMaterialStateColor(),
+              overlayColor: getRandomMaterialStateColor(),
               tapTargetSize: MaterialTapTargetSize.padded,
               fixedSize: MaterialStateProperty.all(
                 const Size(_assetWidth, _assetHeight),
@@ -253,15 +263,5 @@ class MainMenuItem extends HookWidget {
     );
   }
 }
-
-MaterialStateProperty<Color> _getRandomMaterialStateColor() =>
-    MaterialStateProperty.all(
-      Colors.primaries[Random().nextInt(Colors.primaries.length)]
-          .withOpacity(.25),
-    );
-
-Color _getRandomMaterialColor() =>
-    Colors.primaries[Random().nextInt(Colors.primaries.length)]
-        .withOpacity(.25);
 
 // class MainAppBar extends StatelessWidget implements PreferredSizeWidget {}
