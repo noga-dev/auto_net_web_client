@@ -31,6 +31,7 @@ class MyApp extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
+    final useChain = useProvider(chainProvider);
     final useIsSignedIn = useProvider(isSignedInProvider);
     final useBeamerDelegate = useState(
       BeamerDelegate(
@@ -98,6 +99,7 @@ class MyApp extends HookWidget {
 
     if (!useIsSignedIn.state) {
       useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
+      useChain.state.retrieveTokenAddress();
     }
 
     return MaterialApp.router(

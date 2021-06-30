@@ -31,8 +31,8 @@ class LandingScreen extends HookWidget {
                 ],
         ),
         image: DecorationImage(
-          alignment: Alignment.bottomCenter,
-          fit: BoxFit.fitWidth,
+          alignment: Alignment.center,
+          fit: BoxFit.fitHeight,
           image: AssetImage(
             themeMode.state == ThemeMode.dark
                 ? 'assets/images/bg-dark.jpg'
@@ -104,7 +104,7 @@ class BuyToken extends HookWidget {
                     onPressed: () {
                       Clipboard.setData(
                         ClipboardData(
-                          text: useChain.tokenAddress,
+                          text: useChain.state.tokenAddress,
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -322,10 +322,10 @@ class BuyTokenDialog extends HookWidget {
                                     TextButton.icon(
                                       onPressed: () => Clipboard.setData(
                                         ClipboardData(
-                                          text: useChain.tokenAddress,
+                                          text: useChain.state.tokenAddress,
                                         ),
                                       ),
-                                      label: Text(useChain.tokenAddress),
+                                      label: Text(useChain.state.tokenAddress),
                                       icon: const Icon(
                                         Icons.copy,
                                       ),
