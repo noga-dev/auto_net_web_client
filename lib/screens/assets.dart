@@ -1,3 +1,4 @@
+import 'package:auto_net/components/atn_contract.dart';
 import 'package:auto_net/components/my_contract.dart';
 import 'package:auto_net/components/new_project.dart';
 import 'package:auto_net/services/providers.dart';
@@ -29,51 +30,14 @@ class MyAssets extends HookWidget {
 
     // useUser.state.web3sign();
     return Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(20.0),
       child: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              width: 200.0,
-              child: Card(
-                child: ListTile(
-                  title: const Text('Balance'),
-                  trailing: Text(
-                    // ignore: prefer_interpolation_to_compose_strings
-                    (useUser.state.walletBalance
-                                ?.getValueInUnit(EtherUnit.ether)
-                                .toStringAsPrecision(4) ??
-                            'N/A') +
-                        'Ξ',
-                  ),
-                ),
-              ),
-            ),
-            _divider,
-            TextButton(
-              style: buttonStyle,
-              onPressed: () => showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  content: EditProject(
-                    project: mockProject
-                      ..shareholders = {}
-                      ..investors = {}
-                      ..team = {}
-                      ..split = 5.0,
-                    useUser: useUser.state,
-                  ),
-                ),
-              ),
-              child: const Text('Create a new project'),
-            ),
-            _divider,
+        child:
             useUser.state.user == null
                 ? const Text('No contracts found')
-                : const MyContract(),
-          ],
+                : MyContractView(),
         ),
-      ),
+      
     );
   }
 }
