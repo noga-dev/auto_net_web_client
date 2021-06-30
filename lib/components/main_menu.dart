@@ -1,5 +1,6 @@
 import 'dart:js_util';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
@@ -41,7 +42,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
               message: 'Home',
               child: ElevatedButton(
                 style: ButtonStyle(
-                  overlayColor: _getRandomColor(),
+                  overlayColor: _getRandomMaterialStateColor(),
                   backgroundColor:
                       MaterialStateProperty.all(Colors.transparent),
                   elevation: MaterialStateProperty.all(0),
@@ -95,9 +96,9 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                   ),
                 ),
               ),
-              backgroundColor: _getRandomColor(),
+              backgroundColor: _getRandomMaterialStateColor(),
               elevation: MaterialStateProperty.all(.7),
-              overlayColor: _getRandomColor(),
+              overlayColor: _getRandomMaterialStateColor(),
             ),
             onPressed: () async {
               if (ethereum == null ||
@@ -117,26 +118,26 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                   .then((value) => useIsSignedInProvider.state = value));
             },
             child: selectedAddress.value != _addressErrorText
-                ? Builder(builder: (context) {
-                    return TextButton(
-                      onPressed: () =>
-                          ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Add Log Off'),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          getShortAddress(selectedAddress.value),
-                          style: TextStyle(
-                            color: themeMode.state == ThemeMode.dark
-                                ? Colors.white
-                                : Colors.black,
+                ? Builder(
+                    builder: (context) {
+                      return FocusTraversalGroup(
+                        descendantsAreFocusable: false,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Center(
+                            child: Text(
+                              getShortAddress(selectedAddress.value),
+                              style: TextStyle(
+                                color: themeMode.state == ThemeMode.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  })
+                      );
+                    },
+                  )
                 : SizedBox(
                     width: size.width * .1,
                     height: _assetHeight - 20,
@@ -153,7 +154,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
             child: Transform.scale(
               scale: 1.2,
               child: Switch(
-                overlayColor: _getRandomColor(),
+                overlayColor: _getRandomMaterialStateColor(),
                 activeThumbImage: const AssetImage('assets/images/sun.png'),
                 inactiveThumbImage:
                     const AssetImage('assets/images/new_moon.png'),
@@ -197,7 +198,8 @@ class MainMenuItem extends HookWidget {
     return Tooltip(
       message: enabled ? text : 'Log in to view your assets',
       child: InkWell(
-        onTap: () {},
+        onTap: enabled ? callback : null,
+        focusColor: _getRandomMaterialColor(),
         onHover: (e) => isHovering.value = e,
         child: AnimatedCrossFade(
           crossFadeState: isHovering.value
@@ -206,7 +208,7 @@ class MainMenuItem extends HookWidget {
           duration: const Duration(milliseconds: 250),
           secondChild: TextButton.icon(
             style: ButtonStyle(
-              overlayColor: _getRandomColor(),
+              overlayColor: _getRandomMaterialStateColor(),
               fixedSize: MaterialStateProperty.all(
                 const Size(_assetWidth, _assetHeight),
               ),
@@ -219,7 +221,7 @@ class MainMenuItem extends HookWidget {
           ),
           firstChild: TextButton(
             style: ButtonStyle(
-              overlayColor: _getRandomColor(),
+              overlayColor: _getRandomMaterialStateColor(),
               tapTargetSize: MaterialTapTargetSize.padded,
               fixedSize: MaterialStateProperty.all(
                 const Size(_assetWidth, _assetHeight),
@@ -231,18 +233,21 @@ class MainMenuItem extends HookWidget {
           firstCurve: Curves.easeIn,
           secondCurve: Curves.easeOut,
           layoutBuilder: (firstChild, firstKey, secondChild, secondKey) {
-            return Stack(
-              children: [
-                Positioned(
-                  key: secondKey,
-                  child: secondChild,
-                ),
-                Positioned(
-                  top: 0,
-                  key: firstKey,
-                  child: firstChild,
-                ),
-              ],
+            return FocusTraversalGroup(
+              descendantsAreFocusable: false,
+              child: Stack(
+                children: [
+                  Positioned(
+                    key: secondKey,
+                    child: secondChild,
+                  ),
+                  Positioned(
+                    top: 0,
+                    key: firstKey,
+                    child: firstChild,
+                  ),
+                ],
+              ),
             );
           },
         ),
@@ -251,9 +256,14 @@ class MainMenuItem extends HookWidget {
   }
 }
 
-MaterialStateProperty<Color> _getRandomColor() => MaterialStateProperty.all(
+MaterialStateProperty<Color> _getRandomMaterialStateColor() =>
+    MaterialStateProperty.all(
       Colors.primaries[Random().nextInt(Colors.primaries.length)]
           .withOpacity(.25),
     );
+
+Color _getRandomMaterialColor() =>
+    Colors.primaries[Random().nextInt(Colors.primaries.length)]
+        .withOpacity(.25);
 
 // class MainAppBar extends StatelessWidget implements PreferredSizeWidget {}

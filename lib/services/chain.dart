@@ -3,23 +3,33 @@ import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import '../models/abi.dart';
 import '../models/project.dart';
-import 'package:flutter/material.dart';
 
 class Chain {
   List<Project> projects = [];
-  bool populating = false;
-  bool populated = false;
+  bool isPpopulating = false;
+  bool isPopulated = false;
   late List addressesOfProjects;
-  late String tokenAddress;
+  late String tokenAddress; // TODO(EightRice): can this be hardcoded?
   String chainID = '';
   var apiUrl = infuraUrl;
   final EthereumAddress sourceAddr = EthereumAddress.fromHex(sourceAddress);
 
+  void retrieveTokenAddress() async {
+    var httpClient = Client();
+    var ethClient = Web3Client(apiUrl, httpClient);
+    final contractSursa =
+        DeployedContract(ContractAbi.fromJson(sourceAbi, 'Source'), sourceAddr);
+    var tokaddress = contractSursa.function('tokenAddress');
+    var raspunsLaTokenAddress = await ethClient
+        .call(contract: contractSursa, function: tokaddress, params: []);
+    tokenAddress = raspunsLaTokenAddress[0].toString();
+  }
+
   Future<bool> populate() async {
-    populating = true;
+    isPpopulating = true;
     if (projects.isNotEmpty) {
       // print("Projects is not empty");
-      populating = false;
+      isPpopulating = false;
       return true;
     } else {
       // print("Projects was empty");
@@ -79,8 +89,8 @@ class Chain {
         // routes['/market/${project.address}'] =
         //     ProjectView(address: project.address, appstate: state);
       }
-      populated = true;
-      populating = false;
+      isPopulated = true;
+      isPpopulating = false;
       return true;
     }
   }
