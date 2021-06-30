@@ -42,24 +42,25 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
               child: ElevatedButton(
                 style: ButtonStyle(
                   overlayColor: getRandomMaterialStateColor(),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
+                  backgroundColor: MaterialStateProperty.all(
+                    Colors.transparent,
+                  ),
                   elevation: MaterialStateProperty.all(0),
                 ),
                 onPressed: () => Beamer.of(context).beamToNamed('/'),
                 child: Transform.scale(
                   scale: 1.6,
                   child: Image.asset(
-                    // themeMode.state == ThemeMode.light
-                    //     ? 'assets/images/logo-black.png' :
-                    'assets/images/logo-white.png',
+                    themeMode.state == ThemeMode.light
+                        ? 'assets/images/logo-black.png'
+                        : 'assets/images/logo-white.png',
                     width: _assetWidth,
                     height: _assetHeight,
                   ),
                 ),
               ),
             ),
-            MainMenuItem(
+            _MainMenuItem(
               size: size,
               text: 'Market',
               asset: 'shopping-cart',
@@ -67,14 +68,14 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                 '/market',
               ),
             ),
-            MainMenuItem(
+            _MainMenuItem(
               size: size,
               text: 'Assets',
               asset: 'property',
               callback: () => Beamer.of(context).beamToNamed('/assets'),
               enabled: selectedAddress.value != _addressErrorText,
             ),
-            MainMenuItem(
+            _MainMenuItem(
               size: size,
               text: 'Node',
               asset: 'nlp',
@@ -184,8 +185,8 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(_assetHeight + 20.0);
 }
 
-class MainMenuItem extends HookWidget {
-  const MainMenuItem({
+class _MainMenuItem extends HookWidget {
+  const _MainMenuItem({
     Key? key,
     required this.size,
     required this.text,
@@ -263,5 +264,3 @@ class MainMenuItem extends HookWidget {
     );
   }
 }
-
-// class MainAppBar extends StatelessWidget implements PreferredSizeWidget {}

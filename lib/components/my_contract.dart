@@ -13,8 +13,7 @@ class MyContract extends HookWidget {
   Widget build(BuildContext context) {
     final useUser = useProvider(userProvider);
     final useAseturi = useState(<Widget>[]);
-    // TODO(Agon): continue from here
-    final useErc20 = useFuture(useUser.state.getErc20());
+    // final useErc20 = useFuture(useUser.state.getErc20());
 
     useEffect(() {}, []);
 
@@ -57,15 +56,15 @@ class MyContract extends HookWidget {
                 const Divider(height: 40),
                 Row(
                   children: [
-                    Row(
-                      children: [
-                        const Text('Available funds: '),
-                        Text(useErc20.data.toString()
-                            // ignore: lines_longer_than_80_chars
-                            // useUser.state.walletBalance?.getInEther.toString() ?? 'error ATN',
-                            ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     const Text('Available funds: '),
+                    //     Text(useErc20.data.toString()
+                    //         // ignore: lines_longer_than_80_chars
+                    //         // useUser.state.walletBalance?.getInEther.toString() ?? 'error ATN',
+                    //         ),
+                    //   ],
+                    // ),
                     const SizedBox(width: 40),
                     TextButton(
                       onPressed: () {

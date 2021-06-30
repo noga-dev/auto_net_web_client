@@ -1,7 +1,9 @@
 // ignore_for_file: use_full_hex_values_for_flutter_colors
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 // final darkTheme = ThemeData.dark().copyWith(
 //   colorScheme: const ColorScheme.dark().copyWith(
@@ -97,3 +99,19 @@ final buttonStyle = ButtonStyle(
     const Size(200, 50),
   ),
 );
+
+MarkdownStyleSheet getMarkdownStyleSheet(BuildContext context) {
+  return MarkdownStyleSheet.fromCupertinoTheme(
+    CupertinoThemeData(
+      brightness: Theme.of(context).brightness,
+      textTheme: CupertinoTextThemeData(
+        textStyle: TextStyle(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+          fontSize: Theme.of(context).textTheme.bodyText1?.fontSize ?? 20,
+        ),
+      ),
+    ),
+  );
+}

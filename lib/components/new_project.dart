@@ -2,6 +2,7 @@
 import 'package:auto_net/models/human.dart';
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
+import 'package:auto_net/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -342,6 +343,7 @@ class _EditProjectState extends State<EditProject> {
                           } else {
                             return SafeArea(
                               child: Markdown(
+                                styleSheet: getMarkdownStyleSheet(context),
                                 data: (snapshot.data as http.Response)
                                     .body
                                     .toString(),
