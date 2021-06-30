@@ -43,6 +43,7 @@ class Node extends ConsumerWidget {
                       SizedBox(
                         width: 250,
                         child: TextFormField(
+                          initialValue: node.contractAddress,
                           onChanged: (String s) {
                             formKey.currentState?.validate();
                           },
@@ -65,7 +66,11 @@ class Node extends ConsumerWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Text('Uptime duration: ${value(node.counter)}'),
+                      Text('Uptime Duration: ${value(node.counter)}'),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text('Total Earned: \$ ${node.counter}'),
                     ],
                   ),
                 ),
