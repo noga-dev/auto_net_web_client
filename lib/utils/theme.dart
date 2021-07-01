@@ -22,26 +22,32 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 //   textButtonTheme: _textButtonThemeData,
 // );
 
-final mainLightThemeData = ThemeData(
+final mainLightThemeData = ThemeData.light().copyWith(
   brightness: Brightness.light,
   dividerColor: createMaterialColor(const Color(0xff4454238)),
   hintColor: Colors.black87,
   primaryColor: createMaterialColor(const Color(0xffffffff)),
-  primarySwatch: createMaterialColor(const Color(0xff4d4d4d)),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: createMaterialColor(const Color(0xff4d4d4d)),
+  ),
+  // primarySwatch: createMaterialColor(const Color(0xff4d4d4d)),
   highlightColor: const Color(0xff6e6e6e),
   backgroundColor: createMaterialColor(const Color(0xeecacaca)),
   accentColor: const Color(0xffe0deda),
   canvasColor: const Color(0xfff0f0f0),
 );
 
-var mainDarkThemeData = ThemeData(
+final mainDarkThemeData = ThemeData.dark().copyWith(
   buttonColor: createMaterialColor(const Color(0xff505663)),
   dividerColor: createMaterialColor(const Color(0xffcfc099)),
   brightness: Brightness.dark,
   hintColor: Colors.white70,
   accentColor: createMaterialColor(const Color(0xff383736)),
   primaryColor: createMaterialColor(const Color(0xff4d4d4d)),
-  primarySwatch: createMaterialColor(const Color(0xffefefef)),
+  colorScheme: ColorScheme.fromSwatch(
+    primarySwatch: createMaterialColor(const Color(0xffefefef)),
+  ),
+  // primarySwatch: createMaterialColor(const Color(0xffefefef)),
   highlightColor: const Color(0xff6e6e6e),
 );
 
@@ -123,9 +129,13 @@ ButtonStyle getButtonStyle(BuildContext context) {
     backgroundColor: MaterialStateProperty.all(
       getRandomMaterialColor().withOpacity(.25),
     ),
-    foregroundColor: MaterialStateProperty.all(
-      isDark ? Colors.white : Colors.black,
-    ),
+    padding: MaterialStateProperty.all(const EdgeInsets.all(20.0)),
+    foregroundColor: MaterialStateProperty.resolveWith((states) {
+      if (states.contains(MaterialState.disabled)) {
+        return isDark ? Colors.red : Colors.red;
+      }
+      return isDark ? Colors.white : Colors.black;
+    }),
     // shape: MaterialStateProperty.all(
     //   RoundedRectangleBorder(
     //     side: BorderSide(

@@ -1,13 +1,11 @@
 // ignore_for_file: lines_longer_than_80_chars
 import 'package:auto_net/services/providers.dart';
+import 'package:auto_net/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-const _addressErrorText = 'addrError';
 
 class LandingScreen extends HookWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -59,9 +57,6 @@ class BuyToken extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final useChain = useProvider(chainProvider);
-    // final useUser = useProvider(us3r);
-    final selectedAddress =
-        useState(ethereum?.selectedAddress ?? _addressErrorText);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -164,14 +159,13 @@ class BuyToken extends HookWidget {
           ),
         ),
         const SizedBox(height: 39),
-        TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: Theme.of(context).buttonColor,
-            elevation: 1,
-          ),
-          onPressed: selectedAddress.value == _addressErrorText
-              ? null
-              : () {
+        useProvider(isSignedInProvider).state
+            ? TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).buttonColor,
+                  elevation: 1,
+                ),
+                onPressed: () {
                   showDialog(
                     context: context,
                     builder: (context) => const AlertDialog(
@@ -183,22 +177,31 @@ class BuyToken extends HookWidget {
                     ),
                   );
                 },
-          child: Container(
-            width: 170,
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.network(
-                  'https://i.ibb.co/kXVw8Z2/logo64x64.png',
-                  height: 30,
+                child: SizedBox(
+                  width: 170,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          'https://i.ibb.co/kXVw8Z2/logo64x64.png',
+                          height: 30,
+                        ),
+                        const SizedBox(width: 7),
+                        const Text('Buy ATN'),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(width: 7),
-                const Text('Buy ATN'),
-              ],
-            ),
-          ),
-        ),
+              )
+            : TextButton.icon(
+                onPressed: null,
+                style: getButtonStyle(context),
+                label: const Text(
+                    'Log in with Matemask to interact with contract'),
+                icon: const Icon(Icons.info),
+              ),
         const SizedBox(height: 30)
       ],
     );
