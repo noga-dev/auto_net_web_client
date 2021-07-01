@@ -24,7 +24,7 @@ class MyAssets extends HookWidget {
       child: Center(
         child: useUser.state.user == null
             ? const Text('No contracts found')
-            : const MyContractView(),
+            : MyContractView(),
       ),
     );
   }
