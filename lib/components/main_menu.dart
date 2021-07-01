@@ -28,6 +28,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
     final size = MediaQuery.of(context).size;
     final useUser = useProvider(userProvider);
     final useIsSignedInProvider = useProvider(isSignedInProvider);
+
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: _assetHeight + 40,
@@ -123,6 +124,9 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                         descendantsAreFocusable: false,
                         child: TextButton(
                           style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                              const EdgeInsets.all(20),
+                            ),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
@@ -147,8 +151,8 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                     },
                   )
                 : SizedBox(
-                    width: size.width * .1,
-                    height: _assetHeight ,
+                    width: _assetHeight,
+                    height: _assetHeight,
                     child: Image.network(
                       'assets/assets/images/metamask.png',
                     ),
@@ -156,23 +160,20 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-          child: RotatedBox(
-            quarterTurns: 0,
-            child: Transform.scale(
-              scale: 1.3,
-              child: Switch(
-                overlayColor: getRandomMaterialStateColor(),
-                activeThumbImage: const AssetImage('assets/images/sun.png'),
-                inactiveThumbImage:
-                    const AssetImage('assets/images/new_moon.png'),
-                inactiveThumbColor: Colors.white,
-                activeColor: Colors.black12,
-                value: themeMode.state == ThemeMode.light,
-                onChanged: (val) => themeMode.state == ThemeMode.light
-                    ? themeMode.state = ThemeMode.dark
-                    : themeMode.state = ThemeMode.light,
-              ),
+          padding: const EdgeInsets.only(right: 7.0, left: 16.0),
+          child: RotationTransition(
+            turns: const AlwaysStoppedAnimation(-45 / 360),
+            child: Switch(
+              overlayColor: getRandomMaterialStateColor(),
+              activeThumbImage: const AssetImage('assets/images/sun.png'),
+              inactiveThumbImage:
+                  const AssetImage('assets/images/new_moon.png'),
+              inactiveThumbColor: Colors.white,
+              activeColor: Colors.amber,
+              value: themeMode.state == ThemeMode.light,
+              onChanged: (val) => themeMode.state == ThemeMode.light
+                  ? themeMode.state = ThemeMode.dark
+                  : themeMode.state = ThemeMode.light,
             ),
           ),
         ),
