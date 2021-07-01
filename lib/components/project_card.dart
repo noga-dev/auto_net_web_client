@@ -16,6 +16,7 @@ class ProjectCard extends StatelessWidget {
           ),
           child: SizedBox(
             width: 400,
+            height:260,
             child: Wrap(
               children: [
                 Padding(
@@ -24,7 +25,7 @@ class ProjectCard extends StatelessWidget {
                     children: [
                       ConstrainedBox(
                         constraints:
-                            const BoxConstraints(maxHeight: 90, maxWidth: 90),
+                        const BoxConstraints(maxHeight: 90, maxWidth: 90),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: isValidImageExtension(project.imgUrl ?? '')
@@ -49,16 +50,18 @@ class ProjectCard extends StatelessWidget {
                             ),
                           ),
                           Row(
-                            children: const [Text('******'), Text('\\u200d')],
+                            children: const [Text('******'), Text('\u200d')],
                           )
                         ],
                       ),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(19),
-                  child: Text(project.description ?? ''),
+                Container(
+                
+                  height: 150,
+                  padding: const EdgeInsets.symmetric(horizontal:19),
+                  child:  Center(child: Text(project.description ?? '')),
                 ),
               ],
             ),

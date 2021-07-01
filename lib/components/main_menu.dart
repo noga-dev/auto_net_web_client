@@ -12,7 +12,7 @@ import 'package:lottie/lottie.dart';
 import 'package:very_good_analysis/very_good_analysis.dart';
 
 const _addressErrorText = 'addrError';
-const _assetHeight = 80.0;
+const _assetHeight = 60.0;
 const _assetWidth = 140.0;
 
 class MainAppBar extends HookWidget with PreferredSizeWidget {
@@ -28,7 +28,6 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
     final size = MediaQuery.of(context).size;
     final useUser = useProvider(userProvider);
     final useIsSignedInProvider = useProvider(isSignedInProvider);
-
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: _assetHeight + 40,
@@ -49,7 +48,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                 ),
                 onPressed: () => Beamer.of(context).beamToNamed('/'),
                 child: Transform.scale(
-                  scale: 1.6,
+                  scale: 2,
                   child: Image.asset(
                     themeMode.state == ThemeMode.light
                         ? 'assets/images/logo-black.png'
@@ -149,7 +148,7 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
                   )
                 : SizedBox(
                     width: size.width * .1,
-                    height: _assetHeight - 20,
+                    height: _assetHeight ,
                     child: Image.network(
                       'assets/assets/images/metamask.png',
                     ),
@@ -157,18 +156,18 @@ class MainAppBar extends HookWidget with PreferredSizeWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           child: RotatedBox(
-            quarterTurns: 3,
+            quarterTurns: 0,
             child: Transform.scale(
-              scale: 1.2,
+              scale: 1.3,
               child: Switch(
                 overlayColor: getRandomMaterialStateColor(),
                 activeThumbImage: const AssetImage('assets/images/sun.png'),
                 inactiveThumbImage:
                     const AssetImage('assets/images/new_moon.png'),
                 inactiveThumbColor: Colors.white,
-                activeColor: Colors.amber,
+                activeColor: Colors.black12,
                 value: themeMode.state == ThemeMode.light,
                 onChanged: (val) => themeMode.state == ThemeMode.light
                     ? themeMode.state = ThemeMode.dark
