@@ -15,7 +15,7 @@ class Market extends HookWidget {
     final useProjects = useState(<Widget>[]);
 
     return FutureBuilder(
-      future: useChain.state.populate(),
+      future: useChain.populate(),
       builder: (context, snap) {
         if (!snap.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -24,7 +24,7 @@ class Market extends HookWidget {
             return const Center(child: Text('Failed to fetch data'));
           } else {
             if (useProjects.value.isEmpty) {
-              for (var project in useChain.state.projects) {
+              for (var project in useChain.projects) {
                 useProjects.value.add(ProjectCard(project: project));
               }
             }

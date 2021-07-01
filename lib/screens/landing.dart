@@ -99,7 +99,7 @@ class BuyToken extends HookWidget {
                     onPressed: () {
                       Clipboard.setData(
                         ClipboardData(
-                          text: useChain.state.tokenAddress,
+                          text: useChain.tokenAddress,
                         ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -323,10 +323,10 @@ class BuyTokenDialog extends HookWidget {
                                     TextButton.icon(
                                       onPressed: () => Clipboard.setData(
                                         ClipboardData(
-                                          text: useChain.state.tokenAddress,
+                                          text: useChain.tokenAddress,
                                         ),
                                       ),
-                                      label: Text(useChain.state.tokenAddress),
+                                      label: Text(useChain.tokenAddress),
                                       icon: const Icon(
                                         Icons.copy,
                                       ),

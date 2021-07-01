@@ -22,7 +22,7 @@ class MyContractView extends HookWidget {
     final useGetErc20 = useFuture(useMemoized(() => useUser.state.getErc20()));
 
     useUser.state.assets.forEach((key, value) {
-      for (var project in useChain.state.projects) {
+      for (var project in useChain.projects) {
         if (project.address!.toLowerCase() == key.toLowerCase()) {
           useAseturi.value.add(
             _Asset(

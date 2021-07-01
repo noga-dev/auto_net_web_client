@@ -10,6 +10,6 @@ final isSignedInProvider = StateProvider<bool>((ref) => false);
 
 final userProvider = StateProvider((ref) => Human());
 
-final chainProvider = StateProvider((ref) => Chain());
+final chainProvider = ChangeNotifierProvider((ref) => Chain());
 
 final nodeProvider = ChangeNotifierProvider((ref) => NodeChangeNotifier());

@@ -22,17 +22,16 @@ class ProjectDetailsWrapper extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final useChain = useProvider(chainProvider);
-    // final useIsSignedIn = useProvider(isSignedInProvider);
 
-    if (!useChain.state.isPopulated) {
+    if (!useChain.isPopulated) {
       return FutureBuilder(
-        future: useChain.state.populate(),
+        future: useChain.populate(),
         builder: (context, snap) {
           if (!snap.hasData) {
             return const Center(child: CircularProgressIndicator());
           } else {
             if (snap.data as bool) {
-              for (var project in useChain.state.projects) {
+              for (var project in useChain.projects) {
                 if (projectAddress.contains(project.address!)) {
                   return ProjectDetails(project: project);
                 }
@@ -44,7 +43,7 @@ class ProjectDetailsWrapper extends HookWidget {
       );
     }
 
-    for (var project in useChain.state.projects) {
+    for (var project in useChain.projects) {
       if (projectAddress.contains(project.address!)) {
         return ProjectDetails(project: project);
       }

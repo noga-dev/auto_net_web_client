@@ -11,20 +11,21 @@ class MyAssets extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final userAddress = useState(ethereum?.selectedAddress ?? _addrError);
-    final useUser = useProvider(userProvider);
-
+    final useChain = useProvider(chainProvider);
     if (!useProvider(isSignedInProvider).state && kReleaseMode) {
       return page403;
     }
 
-    // useUser.state.web3sign();
+    if (!useChain.isPopulated) {
+      useChain.populate();
+    }
+
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Center(
-        child: useUser.state.user == null
-            ? const Text('No contracts found')
-            : MyContractView(),
+        child: useProvider(chainProvider).isPopulated
+            ? MyContractView()
+            : const CircularProgressIndicator(),
       ),
     );
   }

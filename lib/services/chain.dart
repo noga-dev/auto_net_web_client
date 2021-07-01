@@ -1,10 +1,11 @@
 import 'package:auto_net/utils/common.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 import '../models/abi.dart';
 import '../models/project.dart';
 
-class Chain {
+class Chain extends ChangeNotifier {
   List<Project> projects = [];
   bool isPpopulating = false;
   bool isPopulated = false;
@@ -91,6 +92,7 @@ class Chain {
       }
       isPopulated = true;
       isPpopulating = false;
+      notifyListeners();
       return true;
     }
   }

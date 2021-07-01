@@ -29,7 +29,7 @@ class MyApp extends HookWidget {
 
     if (!useIsSignedIn.state) {
       useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
-      useChain.state.retrieveTokenAddress();
+      useChain.retrieveTokenAddress();
     }
 
     return MaterialApp.router(
