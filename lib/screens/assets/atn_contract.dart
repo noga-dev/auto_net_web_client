@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:auto_net/components/new_project.dart';
+import 'package:auto_net/screens/market/new_project.dart';
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/mock.dart';

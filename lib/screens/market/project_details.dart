@@ -1,5 +1,5 @@
 // ignore_for_file: cascade_invocations
-import 'package:auto_net/components/project_card.dart';
+import 'package:auto_net/screens/market/project_card.dart';
 import 'package:auto_net/models/project.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/mock.dart';

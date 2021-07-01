@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'screens/project_details.dart';
+import 'screens/market/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {

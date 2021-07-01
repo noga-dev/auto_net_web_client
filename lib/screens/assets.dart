@@ -1,4 +1,4 @@
-import 'package:auto_net/components/atn_contract.dart';
+import 'package:auto_net/screens/assets/atn_contract.dart';
 import 'package:auto_net/services/providers.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter/foundation.dart';
