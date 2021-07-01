@@ -274,9 +274,7 @@ class BuyTokenDialog extends HookWidget {
           width: 100,
           height: 50,
           child: TextButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.red),
-            ),
+            style: getButtonStyle(context),
             onPressed: () async {
               if (useDiff.value == 0) {
                 useError.value = 'INVALID AMOUNT';

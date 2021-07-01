@@ -122,6 +122,7 @@ MarkdownStyleSheet getMarkdownStyleSheet(BuildContext context) {
   );
 }
 
+//todo integrate these into the theme itself
 ButtonStyle getButtonStyle(BuildContext context) {
   final isDark = Theme.of(context).brightness == Brightness.dark;
   return ButtonStyle(
