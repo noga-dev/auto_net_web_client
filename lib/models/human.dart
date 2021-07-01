@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:js_util';
+import 'dart:math';
 import 'package:http/http.dart';
 import 'package:auto_net/utils/common.dart';
 import 'package:flutter_web3_provider/ethereum.dart';
 import 'package:flutter_web3_provider/ethers.dart';
-import 'package:web3dart/contracts/erc20.dart';
 import 'package:web3dart/web3dart.dart';
 import '../contracts/user.g.dart';
 
@@ -33,17 +34,30 @@ class Human {
   ];
 
   Future<BigInt> getErc20() async {
-    var erc20 = Erc20(
-      address: EthereumAddress.fromHex(ethereum!.selectedAddress),
-      client: web3infura,
-    );
+    // EtherAmount.fromUnitAndValue(EtherUnit.finney, widget.sc.valoare)
+    //     .getValueInUnit(EtherUnit.ether)
+    //     .toString();
 
-    var balance = await erc20.balanceOf(
-      EthereumAddress.fromHex(ethereum!.selectedAddress),
-    );
+    // print('erc20 entry');
 
-    print(balance);
-    return balance;
+    // var erc20 = Erc20(
+    //   address: EthereumAddress.fromHex(ethereum!.selectedAddress),
+    //   client: web3infura,
+    // );
+
+    // ignore: unused_local_variable
+    // var balance = await erc20.balanceOf(
+    //   EthereumAddress.fromHex(ethereum!.selectedAddress),
+    // );
+
+    return Future.delayed(
+      const Duration(),
+      () => BigInt.from(
+        Random().nextDouble() * 10000,
+      ),
+    );
+    // return balance;
+    // return user!.balanceATN();
   }
 
   Future<bool> web3sign() async {

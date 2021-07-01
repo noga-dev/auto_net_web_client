@@ -28,12 +28,19 @@ class Market extends HookWidget {
                 useProjects.value.add(ProjectCard(project: project));
               }
             }
-            return Align(
-              alignment: Alignment.topCenter,
-              child:Padding(padding: const EdgeInsets.only(top:16),child:Wrap(
-                runSpacing: 10,
-                spacing: 7,
-                children: useProjects.value)));
+            return SingleChildScrollView(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Wrap(
+                    runSpacing: 10,
+                    spacing: 7,
+                    children: useProjects.value,
+                  ),
+                ),
+              ),
+            );
             // GridView.count(
             //   mainAxisSpacing: 20,
             //   crossAxisSpacing: 20,

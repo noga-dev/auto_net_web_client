@@ -22,7 +22,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 //   textButtonTheme: _textButtonThemeData,
 // );
 
-final lightThemeData = ThemeData(
+final mainLightThemeData = ThemeData(
   brightness: Brightness.light,
   dividerColor: createMaterialColor(const Color(0xff4454238)),
   hintColor: Colors.black87,
@@ -34,7 +34,7 @@ final lightThemeData = ThemeData(
   canvasColor: const Color(0xfff0f0f0),
 );
 
-var darkThemeData = ThemeData(
+var mainDarkThemeData = ThemeData(
   buttonColor: createMaterialColor(const Color(0xff505663)),
   dividerColor: createMaterialColor(const Color(0xffcfc099)),
   brightness: Brightness.dark,
@@ -113,5 +113,26 @@ MarkdownStyleSheet getMarkdownStyleSheet(BuildContext context) {
         ),
       ),
     ),
+  );
+}
+
+ButtonStyle getButtonStyle(BuildContext context) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+  return ButtonStyle(
+    elevation: MaterialStateProperty.all(4.0),
+    backgroundColor: MaterialStateProperty.all(
+      getRandomMaterialColor().withOpacity(.25),
+    ),
+    foregroundColor: MaterialStateProperty.all(
+      isDark ? Colors.white : Colors.black,
+    ),
+    // shape: MaterialStateProperty.all(
+    //   RoundedRectangleBorder(
+    //     side: BorderSide(
+    //       width: 1.0,
+    //       color: isDark ? Colors.teal : Colors.lime,
+    //     ),
+    //   ),
+    // ),
   );
 }

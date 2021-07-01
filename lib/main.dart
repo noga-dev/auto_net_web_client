@@ -99,8 +99,8 @@ class MyApp extends HookWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Autonet',
-      theme: lightThemeData,
-      darkTheme: darkThemeData,
+      theme: mainLightThemeData,
+      darkTheme: mainDarkThemeData,
       themeMode: useProvider(themeModeProvider).state,
       routeInformationParser: BeamerParser(),
       builder: (context, child) {
