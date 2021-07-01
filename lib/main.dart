@@ -1,18 +1,12 @@
 // ignore_for_file: use_full_hex_values_for_flutter_colors
 
-import 'package:auto_net/components/main_menu.dart';
-import 'package:auto_net/screens/assets.dart';
-import 'package:auto_net/screens/landing.dart';
-import 'package:auto_net/screens/market.dart';
-import 'package:auto_net/screens/node.dart';
-import 'package:auto_net/utils/common.dart';
+import 'package:auto_net/components/routes.dart';
 import 'package:auto_net/utils/theme.dart';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'screens/market/project_details.dart';
 import 'services/providers.dart';
 
 void main() async {
@@ -24,8 +18,6 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-const _appBar = MainAppBar();
-
 class MyApp extends HookWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -34,62 +26,6 @@ class MyApp extends HookWidget {
     final useUser = useProvider(userProvider);
     final useChain = useProvider(chainProvider);
     final useIsSignedIn = useProvider(isSignedInProvider);
-    final useBeamerDelegate = useState(
-      BeamerDelegate(
-        transitionDelegate: const NoAnimationTransitionDelegate(),
-        notFoundPage: BeamPage(
-          child: Scaffold(
-            appBar: _appBar,
-            body: page404,
-          ),
-        ),
-        locationBuilder: SimpleLocationBuilder(
-          routes: {
-            '/': (context, state) => BeamPage(
-                  key: UniqueKey(),
-                  title: 'Autonet Home',
-                  child: const Scaffold(
-                    appBar: _appBar,
-                    body: LandingScreen(),
-                  ),
-                ),
-            '/market': (context, state) => BeamPage(
-                  key: UniqueKey(),
-                  title: 'Autonet Market',
-                  child: const Scaffold(
-                    appBar: _appBar,
-                    body: Market(),
-                  ),
-                ),
-            '/assets': (context, state) => BeamPage(
-                  key: UniqueKey(),
-                  title: 'Autonet Assets',
-                  child: const Scaffold(
-                    appBar: _appBar,
-                    body: MyAssets(),
-                  ),
-                ),
-            '/project/:projectAddress': (context, state) => BeamPage(
-                  title: 'Autonet Project Details',
-                  child: Scaffold(
-                    appBar: _appBar,
-                    body: ProjectDetailsWrapper(
-                      projectAddress: state.pathParameters['projectAddress'] ??
-                          '0x27a4c07892df16950a5206de35b40a0358de86c0',
-                    ),
-                  ),
-                ),
-            '/node': (context, state) => BeamPage(
-                  title: 'Autonet New Project',
-                  child: const Scaffold(
-                    appBar: _appBar,
-                    body: Node(),
-                  ),
-                ),
-          },
-        ),
-      ),
-    );
 
     if (!useIsSignedIn.state) {
       useUser.state.web3sign().then((value) => useIsSignedIn.state = value);
@@ -114,7 +50,7 @@ class MyApp extends HookWidget {
           child: child!,
         );
       },
-      routerDelegate: useBeamerDelegate.value,
+      routerDelegate: beamerDelegate,
     );
   }
 }
